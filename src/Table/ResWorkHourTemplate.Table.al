@@ -1,0 +1,126 @@
+table 33016865 "Res. Work-Hour Template"
+{
+    Caption = 'Res. Work-Hour Template';
+    LookupFormID = Form33016914;
+
+    fields
+    {
+        field(1; "Code"; Code[10])
+        {
+            Caption = 'Code';
+            NotBlank = true;
+        }
+        field(2; Description; Text[30])
+        {
+            Caption = 'Description';
+        }
+        field(3; Monday; Decimal)
+        {
+            Caption = 'Monday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(4; Tuesday; Decimal)
+        {
+            Caption = 'Tuesday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(5; Wednesday; Decimal)
+        {
+            Caption = 'Wednesday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(6; Thursday; Decimal)
+        {
+            Caption = 'Thursday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(7; Friday; Decimal)
+        {
+            Caption = 'Friday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(8; Saturday; Decimal)
+        {
+            Caption = 'Saturday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(9; Sunday; Decimal)
+        {
+            Caption = 'Sunday';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 24;
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                CalculateWeekTotal;
+            end;
+        }
+        field(10; "Total per Week"; Decimal)
+        {
+            Caption = 'Total per Week';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+        }
+    }
+
+    keys
+    {
+        key(Key1; "Code")
+        {
+            Clustered = true;
+        }
+    }
+
+    fieldgroups
+    {
+    }
+
+    procedure CalculateWeekTotal()
+    begin
+        "Total per Week" := Monday + Tuesday + Wednesday + Thursday + Friday + Saturday + Sunday;
+    end;
+}
+

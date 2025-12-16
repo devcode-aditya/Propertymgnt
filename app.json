@@ -1,0 +1,43 @@
+{
+  "id": "195883d2-a3a9-43f9-86ef-b10e8a271051",
+  "name": "PMS",
+  "publisher": "IVS",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
+      "publisher": "Microsoft",
+      "version": "25.14.42772.0",
+      "name": "Base Application"
+    }
+  ],
+  "screenshots": [],
+  
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 9999999
+            
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": false
+  },
+  "runtime": "14.0",
+  "showMyCode": false,
+"target": "Cloud",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
