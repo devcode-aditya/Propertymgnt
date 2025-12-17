@@ -2391,11 +2391,11 @@ codeunit 90 "Purch.-Post"
         Text036: Label 'You cannot assign more than %1 units in %2 = %3,%4 = %5,%6 = %7.';
         Text037: Label 'You must assign all item charges, if you invoice everything.';
         Text038: Label 'You cannot assign item charges to the %1 %2 = %3,%4 = %5, %6 = %7, because it has been invoiced.';
-        CurrExchRate: Record "330";
-        PurchSetup: Record "312";
-        GLSetup: Record "98";
-        InvtSetup: Record "313";
-        GLEntry: Record "17";
+        CurrExchRate: Record "Currency Exchange Rate";
+        PurchSetup: Record "Purchases & Payables Setup";
+        GLSetup: Record "General Ledger Setup";
+        InvtSetup: Record "Inventory Setup";
+        GLEntry: Record "G/L Entry";
         PurchHeader: Record "Purchase Header";
         PurchLine: Record "Purchase Line";
         PurchLine2: Record "Purchase Line";
@@ -2407,41 +2407,41 @@ codeunit 90 "Purch.-Post"
         TempPrepmtPurchLine: Record "Purchase Line" temporary;
         CombinedPurchLineTemp: Record "Purchase Line" temporary;
         PurchRcptHeader: Record "Purch. Rcpt. Header";
-        PurchRcptLine: Record "121";
+        PurchRcptLine: Record "Purch. Rcpt. Line";
         PurchInvHeader: Record "Purch. Inv. Header";
-        PurchInvLine: Record "123";
-        PurchCrMemoHeader: Record "124";
-        PurchCrMemoLine: Record "125";
-        ReturnShptHeader: Record "6650";
-        ReturnShptLine: Record "6651";
+        PurchInvLine: Record "Purch. Inv. Line";
+        PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
+        PurchCrMemoLine: Record "Purch. Cr. Memo Line";
+        ReturnShptHeader: Record "Return Shipment Header";
+        ReturnShptLine: Record "Return Shipment Line";
         SalesOrderHeader: Record "Sales Header";
-        SalesOrderLine: Record "37";
-        SalesShptHeader: Record "110";
-        SalesShptLine: Record "111";
+        SalesOrderLine: Record "Sales Line";
+        SalesShptHeader: Record "Sales Shipment Header";
+        SalesShptLine: Record "Sales Shipment Line";
         ItemChargeAssgntPurch: Record "5805";
         TempItemChargeAssgntPurch: Record "5805" temporary;
-        GenJnlLine: Record "81";
-        ItemJnlLine: Record "83";
-        VendPostingGr: Record "93";
-        SourceCodeSetup: Record "242";
-        SourceCode: Record "230";
-        PurchCommentLine: Record "43";
-        PurchCommentLine2: Record "43";
-        InvPostingBuffer: array[2] of Record "49" temporary;
-        DropShptPostBuffer: Record "223" temporary;
-        GenPostingSetup: Record "252";
-        VATPostingSetup: Record "325";
-        Currency: Record "4";
+        GenJnlLine: Record "Gen. Journal Line";
+        ItemJnlLine: Record "Item Journal Line";
+        VendPostingGr: Record "Vendor Posting Group";
+        SourceCodeSetup: Record "Source Code Setup";
+        SourceCode: Record "Source Code";
+        PurchCommentLine: Record "Purch. Comment Line";
+        PurchCommentLine2: Record "Purch. Comment Line";
+        InvPostingBuffer: array[2] of Record "Invt. Posting Buffer" temporary;
+        DropShptPostBuffer: Record "Drop Shpt. Post. Buffer" temporary;
+        GenPostingSetup: Record "General Posting Setup";
+        VATPostingSetup: Record "VAT Posting Setup";
+        Currency: Record Currency;
         Vend: Record Vendor;
-        VendLedgEntry: Record "25";
-        FA: Record "5600";
-        FASetup: Record "5603";
-        DeprBook: Record "5611";
-        GLAcc: Record "15";
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        FA: Record "Fixed Asset";
+        FASetup: Record "FA Setup";
+        DeprBook: Record "Depreciation Book";
+        GLAcc: Record "G/L Account";
         DocDim: Record "Document Dimension";
         TempDocDim: Record "Document Dimension" temporary;
-        ApprovalEntry: Record "454";
-        TempApprovalEntry: Record "454" temporary;
+        ApprovalEntry: Record "Approval Entry";
+        TempApprovalEntry: Record "Approval Entry" temporary;
         PrepmtDocDim: Record "Document Dimension" temporary;
         WhseRqst: Record "5765";
         WhseRcptHeader: Record "7316";
@@ -2454,19 +2454,19 @@ codeunit 90 "Purch.-Post"
         PostedWhseRcptLine: Record "7319";
         PostedWhseShptHeader: Record "7322";
         PostedWhseShptLine: Record "7323";
-        TempVATAmountLine: Record "290" temporary;
-        TempVATAmountLineRemainder: Record "290" temporary;
-        Location: Record "14";
+        TempVATAmountLine: Record "VAT Amount Line" temporary;
+        TempVATAmountLineRemainder: Record "VAT Amount Line" temporary;
+        Location: Record Location;
         TempHandlingSpecification: Record "Tracking Specification" temporary;
         TempTrackingSpecification: Record "Tracking Specification" temporary;
         TempTrackingSpecificationInv: Record "Tracking Specification" temporary;
         TempWhseSplitSpecification: Record "Tracking Specification" temporary;
         TempValueEntryRelation: Record "6508" temporary;
-        ReservationEntry2: Record "337";
-        ReservationEntry3: Record "337" temporary;
-        ItemJnlLine2: Record "83";
-        Job: Record "167";
-        TempICGenJnlLine: Record "81" temporary;
+        ReservationEntry2: Record "Reservation Entry";
+        ReservationEntry3: Record "Reservation Entry" temporary;
+        ItemJnlLine2: Record "Item Journal Line";
+        Job: Record Job;
+        TempICGenJnlLine: Record "Gen. Journal Line" temporary;
         TempICJnlLineDim: Record "Gen. Journal Line Dimension" temporary;
         TempPrePayDeductLCYPurchLine: Record "Purchase Line" temporary;
         NoSeriesMgt: Codeunit "396";
@@ -3049,7 +3049,7 @@ codeunit 90 "Purch.-Post"
 
     local procedure PostItemChargePerRcpt(PurchLine: Record "Purchase Line")
     var
-        PurchRcptLine: Record "121";
+        PurchRcptLine: Record "Purch. Rcpt. Line";
         TempItemLedgEntry: Record "Item Ledger Entry" temporary;
         ItemTrackingMgt: Codeunit "6500";
         Factor: Decimal;
@@ -3114,7 +3114,7 @@ codeunit 90 "Purch.-Post"
 
     local procedure PostItemChargePerRetShpt(PurchLine: Record "Purchase Line")
     var
-        ReturnShptLine: Record "6651";
+        ReturnShptLine: Record "Return Shipment Line";
         TempItemLedgEntry: Record "Item Ledger Entry" temporary;
         ItemTrackingMgt: Codeunit "6500";
         Factor: Decimal;
@@ -3318,7 +3318,7 @@ codeunit 90 "Purch.-Post"
 
     local procedure PostItemChargePerSalesShpt(PurchLine: Record "Purchase Line")
     var
-        SalesShptLine: Record "111";
+        SalesShptLine: Record "Sales Shipment Line";
         TempItemLedgEntry: Record "Item Ledger Entry" temporary;
         ItemTrackingMgt: Codeunit "6500";
         Factor: Decimal;
@@ -4839,7 +4839,7 @@ codeunit 90 "Purch.-Post"
     var
         PurchOrderLine2: Record "Purchase Line";
         PurchOrderInvLine2: Record "Purchase Line";
-        PurchRcptLine: Record "121";
+        PurchRcptLine: Record "Purch. Rcpt. Line";
     begin
         WITH PurchOrderInvLine DO BEGIN
             ClearItemChargeAssgntFilter;
@@ -5406,7 +5406,7 @@ codeunit 90 "Purch.-Post"
     var
         PurchLineToCheck: Record "Purchase Line";
         ReservationEntry: Record "337";
-        Item: Record "27";
+        Item: Record Item;
         ItemTrackingCode: Record "6502";
         CreateReservEntry: Codeunit "99000830";
         ItemTrackingManagement: Codeunit "6500";
@@ -5593,7 +5593,7 @@ codeunit 90 "Purch.-Post"
     local procedure CalcBaseQty(ItemNo: Code[20]; UOMCode: Code[10]; Qty: Decimal): Decimal
     var
         UOMMgt: Codeunit "5402";
-        Item: Record "27";
+        Item: Record Item;
     begin
         Item.GET(ItemNo);
         EXIT(ROUND(Qty * UOMMgt.GetQtyPerUnitOfMeasure(Item, UOMCode), 0.00001));
@@ -5996,8 +5996,8 @@ codeunit 90 "Purch.-Post"
     local procedure InsertICGenJnlLine(PurchLine: Record "Purchase Line")
     var
         ICGLAccount: Record "410";
-        Cust: Record "18";
-        Currency: Record "4";
+        Cust: Record Customer;
+        Currency: Record Currency;
         ICPartner: Record "IC Partner";
     begin
         PurchHeader.TESTFIELD("Buy-from IC Partner Code", '');

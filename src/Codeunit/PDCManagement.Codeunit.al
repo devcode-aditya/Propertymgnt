@@ -5,17 +5,17 @@ codeunit 33016806 "PDC Management"
     begin
     end;
 
-    procedure CreateAgrmtApplicationLines(RcptJnlLine: Record "81")
+    procedure CreateAgrmtApplicationLines(RcptJnlLine: Record "Gen. Journal Line")
     var
-        AgrmtApplicationLines: Record "33016871";
-        PaymentSchduleLines: Record "33016824";
+        AgrmtApplicationLines: Record "Agrmt Line Application Entries";
+        PaymentSchduleLines: Record "Payment Schedule Lines";
         NextLineNo: Integer;
-        LastAgrmtApplicationLines: Record "33016871";
-        AgrmtApplyEntries: Record "33016871";
+        LastAgrmtApplicationLines: Record "Agrmt Line Application Entries";
+        AgrmtApplyEntries: Record "Agrmt Line Application Entries";
         AgrmtApplyEntriesForm: Form "33016921";
         OK: Boolean;
         AmountApplied: Decimal;
-        RcptJnlLine1: Record "81";
+        RcptJnlLine1: Record "Gen. Journal Line";
     begin
         LastAgrmtApplicationLines.RESET;
         LastAgrmtApplicationLines.SETRANGE("Journal Template Name", RcptJnlLine."Journal Template Name");
@@ -110,11 +110,11 @@ codeunit 33016806 "PDC Management"
             EXIT;
     end;
 
-    procedure InsertAppliedAgrmtEntries(RptJnlApprovedLine: Record "81")
+    procedure InsertAppliedAgrmtEntries(RptJnlApprovedLine: Record "Gen. Journal Line")
     var
-        AgrmtApplicationEntries: Record "33016872";
-        ApplyEntries: Record "33016871";
-        PaymentSchdule: Record "33016824";
+        AgrmtApplicationEntries: Record "Apply Agrmt Line Entry";
+        ApplyEntries: Record "Agrmt Line Application Entries";
+        PaymentSchdule: Record "Payment Schedule Lines";
         NextEntryNo: Integer;
     begin
         IF AgrmtApplicationEntries.FINDLAST THEN
@@ -167,11 +167,11 @@ codeunit 33016806 "PDC Management"
         ApplyEntries.DELETEALL;
     end;
 
-    procedure EditAppliedAgrmtEntries(RptJnlEditLine: Record "81")
+    procedure EditAppliedAgrmtEntries(RptJnlEditLine: Record "Gen. Journal Line")
     var
-        AgrmtApplicationEntries: Record "33016872";
-        ApplyEntries: Record "33016871";
-        PaymentSchdule: Record "33016824";
+        AgrmtApplicationEntries: Record "Apply Agrmt Line Entry";
+        ApplyEntries: Record "Agrmt Line Application Entries";
+        PaymentSchdule: Record "Payment Schedule Lines";
         NextEntryNo: Integer;
     begin
         IF ApplyEntries.FINDLAST THEN
@@ -234,10 +234,10 @@ codeunit 33016806 "PDC Management"
         AgrmtApplicationEntries.DELETEALL;
     end;
 
-    procedure ProcessAppliedAgrmtEntries(RcptJnlTemplate: Code[10]; RcptJnlBatch: Code[10]; RcptJnlLineNo: Integer; ProcessedRcptJnlLine: Record "81")
+    procedure ProcessAppliedAgrmtEntries(RcptJnlTemplate: Code[10]; RcptJnlBatch: Code[10]; RcptJnlLineNo: Integer; ProcessedRcptJnlLine: Record "Gen. Journal Line")
     var
-        AgrmtApplicationEntries: Record "33016872";
-        ProcessedAgrmtApplEntries: Record "33016872";
+        AgrmtApplicationEntries: Record "Apply Agrmt Line Entry";
+        ProcessedAgrmtApplEntries: Record "Apply Agrmt Line Entry";
         NextEntryNo: Integer;
     begin
         IF ProcessedAgrmtApplEntries.FINDLAST THEN
@@ -286,10 +286,10 @@ codeunit 33016806 "PDC Management"
         AgrmtApplicationEntries.DELETEALL;
     end;
 
-    procedure UnProcessAppliedAgrmtEntries(ProcessedRcptJnlLine: Record "81"; UnProcessedRcptJnlLine: Record "81")
+    procedure UnProcessAppliedAgrmtEntries(ProcessedRcptJnlLine: Record "Gen. Journal Line"; UnProcessedRcptJnlLine: Record "Gen. Journal Line")
     var
-        AgrmtApplicationEntries: Record "33016872";
-        ProcessedAgrmtApplEntries: Record "33016872";
+        AgrmtApplicationEntries: Record "Apply Agrmt Line Entry";
+        ProcessedAgrmtApplEntries: Record "Apply Agrmt Line Entry";
         NextEntryNo: Integer;
     begin
         IF ProcessedAgrmtApplEntries.FINDLAST THEN
@@ -338,10 +338,10 @@ codeunit 33016806 "PDC Management"
         AgrmtApplicationEntries.DELETEALL;
     end;
 
-    procedure PostedAppliedAgrmtEntries(PostedRcptJnlLine: Record "81")
+    procedure PostedAppliedAgrmtEntries(PostedRcptJnlLine: Record "Gen. Journal Line")
     var
-        AgrmtApplicationEntries: Record "33016872";
-        PostedAgrmtApplEntries: Record "33016872";
+        AgrmtApplicationEntries: Record "Apply Agrmt Line Entry";
+        PostedAgrmtApplEntries: Record "Apply Agrmt Line Entry";
         NextEntryNo: Integer;
     begin
         IF PostedAgrmtApplEntries.FINDLAST THEN

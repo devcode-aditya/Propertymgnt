@@ -181,7 +181,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure TestAgreementApprovalLimit(AgreementHeader: Record "Agreement Header"): Boolean
     var
-        UserSetup: Record "91";
+        UserSetup: Record "User Setup";
         AppManagement: Codeunit "439";
         AppAmount: Decimal;
         AppAmountLCY: Decimal;
@@ -200,7 +200,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure TestWOApprovalLimit(WorkOrderHeader: Record "Work Order Header"): Boolean
     var
-        UserSetup: Record "91";
+        UserSetup: Record "User Setup";
         AppManagement: Codeunit "439";
         AppAmount: Decimal;
         AppAmountLCY: Decimal;
@@ -253,7 +253,7 @@ codeunit 33016803 "Premise Approvals Management"
     procedure SendWOApprovalRequest(var WorkOrderHeader: Record "Work Order Header"): Boolean
     var
         TemplateRec: Record "Approval Template";
-        WOLine: Record "33016825";
+        WOLine: Record "Work Order Line";
     begin
         TestSetup;
         WITH WorkOrderHeader DO BEGIN
@@ -289,7 +289,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure FindAgreementApprover(AgreementHeader: Record "Agreement Header"; ApprovalSetup: Record "Approval Setup"; AppTemplate: Record "Approval Template"): Boolean
     var
-        UserSetup: Record "91";
+        UserSetup: Record "User Setup";
         ApprovalEntry: Record "Approval Entry";
         ApprovalMgtNotification: Codeunit "440";
         ApproverId: Code[20];
@@ -297,7 +297,7 @@ codeunit 33016803 "Premise Approvals Management"
         DocReleased: Boolean;
         ApprovalAmount: Decimal;
         ApprovalAmountLCY: Decimal;
-        AgreementLine: Record "33016816";
+        AgreementLine: Record "Agreement Line";
         DocType: Integer;
     begin
         AddApproversTemp.RESET;
@@ -520,7 +520,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure FindWOApprover(WorkOrderHeader: Record "Work Order Header"; ApprovalSetup: Record "Approval Setup"; AppTemplate: Record "Approval Template"): Boolean
     var
-        UserSetup: Record "91";
+        UserSetup: Record "User Setup";
         ApprovalEntry: Record "Approval Entry";
         ApprovalMgtNotification: Codeunit "440";
         ApproverId: Code[20];
@@ -528,7 +528,7 @@ codeunit 33016803 "Premise Approvals Management"
         DocReleased: Boolean;
         ApprovalAmount: Decimal;
         ApprovalAmountLCY: Decimal;
-        WorkOrderLine: Record "33016825";
+        WorkOrderLine: Record "Work Order Line";
         DocType: Integer;
     begin
         AddApproversTemp.RESET;
@@ -662,7 +662,7 @@ codeunit 33016803 "Premise Approvals Management"
         AgreementLineTmp: Record "33016816" temporary;
         TempAmount: Decimal;
         VAtText: Text[30];
-        AgreementLine: Record "33016816";
+        AgreementLine: Record "Agreement Line";
     begin
         AgreementLine.RESET;
         AgreementLine.SETRANGE("Agreement Type", AgreementHeader."Agreement Type");
@@ -678,7 +678,7 @@ codeunit 33016803 "Premise Approvals Management"
     var
         TempAmount: Decimal;
         VAtText: Text[30];
-        WorkOrderLine: Record "33016825";
+        WorkOrderLine: Record "Work Order Line";
     begin
         WorkOrderLine.RESET;
         WorkOrderLine.SETRANGE("Document Type", WorkOrderHeader."Document Type"::"Work Order");
@@ -767,7 +767,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure FillTemplate(var Body: Text[254]; TextNo: Text[30]; AppEntry: Record "Approval Entry"; CalledFrom: Option Approve,Cancel,Reject,Delegate)
     var
-        Customer: Record "18";
+        Customer: Record Customer;
         DocumentType: Text[30];
         DocumentNo: Code[20];
         ClientNo: Code[20];
@@ -938,7 +938,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure SendRejectionsMail(ApprovalEntry: Record "Approval Entry")
     var
-        AppCommentLine: Record "455";
+        AppCommentLine: Record "Approval Comment Line";
     begin
         IF ApprovalRecordExist(ApprovalEntry) THEN BEGIN
             IF MailCreated THEN BEGIN
@@ -1175,7 +1175,7 @@ codeunit 33016803 "Premise Approvals Management"
         END;
     end;
 
-    procedure BuildCommentLine(Comments: Record "455")
+    procedure BuildCommentLine(Comments: Record "Approval Comment Line")
     var
         CommentLine: Text[500];
     begin
@@ -1324,7 +1324,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure DelegateApprovalRequest(ApprovalEntry: Record "Approval Entry")
     var
-        UserSetup: Record "91";
+        UserSetup: Record "User Setup";
         ApprovalSetup: Record "Approval Setup";
         AppManagement: Codeunit "440";
         AgreementHeader: Record "Agreement Header";
@@ -1464,7 +1464,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure ValidateAgreementDetails(AgreementRec: Record "Agreement Header")
     var
-        AgreementLine: Record "33016816";
+        AgreementLine: Record "Agreement Line";
     begin
         AgreementLine.RESET;
         AgreementLine.SETRANGE("Agreement Type", AgreementRec."Agreement Type");
@@ -1479,7 +1479,7 @@ codeunit 33016803 "Premise Approvals Management"
 
     procedure ValidateAgreementPaySchedule(AgreementRec: Record "Agreement Header")
     var
-        PaymentScheduleRec: Record "33016824";
+        PaymentScheduleRec: Record "Payment Schedule Lines";
     begin
         PaymentScheduleRec.RESET;
         PaymentScheduleRec.SETRANGE("Agreement Type", AgreementRec."Agreement Type");

@@ -1012,13 +1012,13 @@ codeunit 33016800 "Work Order Management"
 
     procedure UpdateRevenueSharingAmt(AgreementLineRec: Record "Agreement Line"; FromDate: Date; ToDate: Date): Decimal
     var
-        ClientRevRec: Record "33016829";
-        RevSharingSlabRec: Record "33016830";
+        ClientRevRec: Record "Client Revenue";
+        RevSharingSlabRec: Record "Revenue Sharing Slab";
         ClientRevenueAmt: Decimal;
         ClientRec: Record Customer;
         CheckFlag: Boolean;
         AgreementHeaderRec: Record "Agreement Header";
-        AgreementElementRec: Record "33016812";
+        AgreementElementRec: Record "Agreement Element";
     begin
         /*
         IF AgreementElementRec.GET(AgreementLineRec."Element Type") THEN
@@ -1089,16 +1089,16 @@ codeunit 33016800 "Work Order Management"
 
     end;
 
-    procedure GenerateClientRevenueInvoice(ClientRevenue: Record "33016829")
+    procedure GenerateClientRevenueInvoice(ClientRevenue: Record "Client Revenue")
     var
         InvoiceRec: Record "Sales Header";
         InvoiceLineRec: Record "Sales Line";
         SalesSetup: Record "Sales & Receivables Setup";
         NoSeriesMgt: Codeunit "396";
-        ElementRec: Record "33016812";
+        ElementRec: Record "Agreement Element";
         CustomerRec: Record Customer;
-        ClientSalesRec: Record "33016854";
-        ClientStoreRec: Record "33016853";
+        ClientSalesRec: Record "Client Sales Transactions";
+        ClientStoreRec: Record "Client Store Mapping";
     begin
         PremiseMgtSetup.GET;
         PremiseMgtSetup.TESTFIELD("Revenue Sharing", TRUE);
@@ -1153,9 +1153,9 @@ codeunit 33016800 "Work Order Management"
 
     procedure ReverseClientRevenueInvoice(InvoiceNo: Code[20])
     var
-        ClientRevenueRec: Record "33016829";
-        ClientSalesRec: Record "33016854";
-        ClientStoreRec: Record "33016853";
+        ClientRevenueRec: Record "Client Revenue";
+        ClientSalesRec: Record "Client Sales Transactions";
+        ClientStoreRec: Record "Client Store Mapping";
     begin
         PremiseMgtSetup.GET;
         PremiseMgtSetup.TESTFIELD("Revenue Sharing", TRUE);
@@ -1192,8 +1192,8 @@ codeunit 33016800 "Work Order Management"
 
     procedure UpdateAgreementPremiseRelation(AgreementRec: Record "Agreement Header"; AgreementMaster: Record "Agreement Header")
     var
-        AgreemtRecRelation: Record "33016841";
-        AgrememtMasterRelation: Record "33016841";
+        AgreemtRecRelation: Record "Agreement Premise Relation";
+        AgrememtMasterRelation: Record "Agreement Premise Relation";
     begin
         AgreemtRecRelation.RESET;
         AgreemtRecRelation.SETRANGE("Agreement No.", AgreementRec."No.");

@@ -97,26 +97,26 @@ codeunit 12 "Gen. Jnl.-Post Line"
         TempJnlLineDim: Record "Gen. Journal Line Dimension" temporary;
         TempFAJnlLineDim: Record "Gen. Journal Line Dimension" temporary;
         GLReg: Record "G/L Register";
-        CustPostingGr: Record "92";
-        VendPostingGr: Record "93";
-        Currency: Record "4";
-        AddCurrency: Record "4";
-        ApplnCurrency: Record "4";
-        CurrExchRate: Record "330";
-        VATEntry: Record "254";
-        BankAcc: Record "270";
-        BankAccLedgEntry: Record "271";
-        CheckLedgEntry: Record "272";
-        CheckLedgEntry2: Record "272";
-        BankAccPostingGr: Record "277";
-        GenJnlTemplate: Record "80";
-        TaxJurisdiction: Record "320";
-        TaxDetail: Record "322";
-        FAGLPostBuf: Record "5637" temporary;
-        UnrealizedCustLedgEntry: Record "21";
-        UnrealizedVendLedgEntry: Record "25";
-        GLEntryVatEntrylink: Record "253";
-        TempVatEntry: Record "254" temporary;
+        CustPostingGr: Record "Customer Posting Group";
+        VendPostingGr: Record "Vendor Posting Group";
+        Currency: Record Currency;
+        AddCurrency: Record Currency;
+        ApplnCurrency: Record Currency;
+        CurrExchRate: Record "Currency Exchange Rate";
+        VATEntry: Record "VAT Entry";
+        BankAcc: Record "Bank Account";
+        BankAccLedgEntry: Record "Bank Account Ledger Entry";
+        CheckLedgEntry: Record "Check Ledger Entry";
+        CheckLedgEntry2: Record "Check Ledger Entry";
+        BankAccPostingGr: Record "Bank Account Posting Group";
+        GenJnlTemplate: Record "Gen. Journal Template";
+        TaxJurisdiction: Record "Tax Jurisdiction";
+        TaxDetail: Record "Tax Detail";
+        FAGLPostBuf: Record "FA G/L Posting Buffer" temporary;
+        UnrealizedCustLedgEntry: Record "Cust. Ledger Entry";
+        UnrealizedVendLedgEntry: Record "Vendor Ledger Entry";
+        GLEntryVatEntrylink: Record "G/L Entry - VAT Entry Link";
+        TempVatEntry: Record "VAT Entry" temporary;
         ReversedGLEntryTemp: Record "G/L Entry" temporary;
         InitEntryNoInStore: Record "99001469";
         GenJnlCheckLine: Codeunit "11";
@@ -168,12 +168,12 @@ codeunit 12 "Gen. Jnl.-Post Line"
         CheckUnrealizedVend: Boolean;
         ICTProcesses: Codeunit "10001416";
         Inserted: Boolean;
-        CustLedgEntryRec2: Record "21";
-        VendLedgEntryRec2: Record "25";
+        CustLedgEntryRec2: Record "Cust. Ledger Entry";
+        VendLedgEntryRec2: Record "Vendor Ledger Entry";
         ReverseReason: Code[20];
         GenJnlLine3: Record "Gen. Journal Line";
         LASTLINES: Integer;
-        CompanyInformation: Record "79";
+        CompanyInformation: Record "Company Information";
 
     procedure GetGLReg(var NewGLReg: Record "G/L Register")
     begin
@@ -365,7 +365,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     procedure InitVat()
     var
-        LCYCurrency: Record "4";
+        LCYCurrency: Record Currency;
     begin
         LCYCurrency.InitRoundingPrecision;
         WITH GenJnlLine DO
@@ -516,7 +516,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     procedure PostVAT()
     var
-        TaxDetail2: Record "322";
+        TaxDetail2: Record "Tax Detail";
         VATAmount: Decimal;
         VATAmount2: Decimal;
         VATBase: Decimal;
@@ -1125,11 +1125,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     local procedure PostCust()
     var
-        CustLedgEntry: Record "21";
-        OldCustLedgEntry: Record "21";
-        CVLedgEntryBuf: Record "382";
-        DtldCVLedgEntryBuf: Record "383" temporary;
-        DtldCustLedgEntry: Record "379";
+        CustLedgEntry: Record "Cust. Ledger Entry";
+        OldCustLedgEntry: Record "Cust. Ledger Entry";
+        CVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer" temporary;
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
     begin
         WITH GenJnlLine DO BEGIN
             //APNT-CP1.0
@@ -1349,11 +1349,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     local procedure PostVend()
     var
-        VendLedgEntry: Record "25";
-        OldVendLedgEntry: Record "25";
-        CVLedgEntryBuf: Record "382";
-        DtldCVLedgEntryBuf: Record "383" temporary;
-        DtldVendLedgEntry: Record "380";
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        OldVendLedgEntry: Record "Vendor Ledger Entry";
+        CVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer" temporary;
+        DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
     begin
         WITH GenJnlLine DO BEGIN
             //APNT-CP1.0
@@ -1591,9 +1591,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
     var
         Cheques: Record "50011";
         PostedCheques: Record "50029";
-        DocDim: Record "357";
+        DocDim: Record "Document Dimension";
         DimensionManagement: Codeunit "408";
-        CompInformation: Record "79";
+        CompInformation: Record "Company Information";
     begin
         WITH GenJnlLine DO BEGIN
             BankAccLedgEntry.LOCKTABLE;
@@ -1863,8 +1863,8 @@ codeunit 12 "Gen. Jnl.-Post Line"
     local procedure PostFixedAsset()
     var
         TempGLEntry: Record "G/L Entry";
-        TempFAGLPostBuf: Record "5637";
-        FAReg: Record "5617";
+        TempFAGLPostBuf: Record "FA G/L Posting Buffer";
+        FAReg: Record "FA Register";
         FAAutomaticEntry: Codeunit "5607";
         ShortcutDim1Code: Code[20];
         ShortcutDim2Code: Code[20];
@@ -2329,15 +2329,15 @@ codeunit 12 "Gen. Jnl.-Post Line"
             HandleAddCurrResidualGLEntry;
     end;
 
-    local procedure ApplyCustLedgEntry(var NewCVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; ApplnRoundingPrecision: Decimal)
+    local procedure ApplyCustLedgEntry(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; ApplnRoundingPrecision: Decimal)
     var
-        OldCustLedgEntry: Record "21";
-        OldCVLedgEntryBuf: Record "382";
-        OldCVLedgEntryBuf2: Record "382";
-        NewCustLedgEntry: Record "21";
-        NewCVLedgEntryBuf2: Record "382";
-        OldCVLedgEntryBuf3: Record "382";
-        TempOldCustLedgEntry: Record "21" temporary;
+        OldCustLedgEntry: Record "Cust. Ledger Entry";
+        OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
+        NewCustLedgEntry: Record "Cust. Ledger Entry";
+        NewCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf3: Record "CV Ledger Entry Buffer";
+        TempOldCustLedgEntry: Record "Cust. Ledger Entry" temporary;
         Completed: Boolean;
         AppliedAmount: Decimal;
         AppliedAmountLCY: Decimal;
@@ -2644,7 +2644,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
             END;
     end;
 
-    local procedure CalcPmtTolerance(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf2: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; var PmtTolAmtToBeApplied: Decimal; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer)
+    local procedure CalcPmtTolerance(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; var PmtTolAmtToBeApplied: Decimal; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer)
     var
         PmtTol: Decimal;
         PmtTolLCY: Decimal;
@@ -2685,7 +2685,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcPmtDisc(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf2: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; PmtTolAmtToBeApplied: Decimal; ApplnRoundingPrecision: Decimal; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer)
+    local procedure CalcPmtDisc(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; PmtTolAmtToBeApplied: Decimal; ApplnRoundingPrecision: Decimal; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer)
     var
         PmtDisc: Decimal;
         PmtDiscLCY: Decimal;
@@ -2732,13 +2732,13 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcPmtDiscIfAdjVAT(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; var PmtDiscLCY2: Decimal; var PmtDiscAddCurr2: Decimal; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer; EntryType: Integer)
+    local procedure CalcPmtDiscIfAdjVAT(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; var PmtDiscLCY2: Decimal; var PmtDiscAddCurr2: Decimal; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer; EntryType: Integer)
     var
-        VATEntry: Record "254";
-        VATEntry2: Record "254";
+        VATEntry: Record "VAT Entry";
+        VATEntry2: Record "VAT Entry";
         VATPostingSetup: Record "VAT Posting Setup";
-        TaxJurisdiction: Record "320";
-        DtldCVLedgEntryBuf2: Record "383";
+        TaxJurisdiction: Record "Tax Jurisdiction";
+        DtldCVLedgEntryBuf2: Record "Detailed CV Ledg. Entry Buffer";
         OriginalAmountAddCurr: Decimal;
         PmtDiscRounding: Decimal;
         PmtDiscRoundingAddCurr: Decimal;
@@ -3151,7 +3151,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcPmtDiscTolerance(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf2: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer)
+    local procedure CalcPmtDiscTolerance(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; GLSetup: Record "General Ledger Setup"; NextTransactionNo: Integer; FirstNewVATEntryNo: Integer)
     var
         PmtDiscTol: Decimal;
         PmtDiscTolLCY: Decimal;
@@ -3189,7 +3189,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcCurrencyApplnRounding(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; ApplnRoundingPrecision: Decimal)
+    local procedure CalcCurrencyApplnRounding(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; ApplnRoundingPrecision: Decimal)
     var
         ApplnRounding: Decimal;
         ApplnRoundingLCY: Decimal;
@@ -3215,7 +3215,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         InsertDtldCVLedgEntry(DtldCVLedgEntryBuf, NewCVLedgEntryBuf, FALSE);
     end;
 
-    procedure FindAmtForAppln(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf2: Record "382"; var AppliedAmount: Decimal; var AppliedAmountLCY: Decimal; var OldAppliedAmount: Decimal; ApplnRoundingPrecision: Decimal)
+    procedure FindAmtForAppln(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer"; var AppliedAmount: Decimal; var AppliedAmountLCY: Decimal; var OldAppliedAmount: Decimal; ApplnRoundingPrecision: Decimal)
     begin
         IF OldCVLedgEntryBuf2.GETFILTER(Positive) <> '' THEN BEGIN
             IF OldCVLedgEntryBuf2."Amount to Apply" <> 0 THEN
@@ -3269,11 +3269,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcCurrencyUnrealizedGainLoss(var CVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383" temporary; GenJnlLine: Record "Gen. Journal Line"; AppliedAmount: Decimal; RemainingAmountBeforeAppln: Decimal)
+    local procedure CalcCurrencyUnrealizedGainLoss(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer" temporary; GenJnlLine: Record "Gen. Journal Line"; AppliedAmount: Decimal; RemainingAmountBeforeAppln: Decimal)
     var
         UnRealizedGainLossLCY: Decimal;
-        DtldCustLedgEntry: Record "379";
-        DtldVendLedgEntry: Record "380";
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
     begin
         IF CVLedgEntryBuf."Currency Code" = '' THEN
             EXIT;
@@ -3316,7 +3316,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure CalcCurrencyRealizedGainLoss(var CVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383" temporary; GenJnlLine: Record "Gen. Journal Line"; AppliedAmount: Decimal; AppliedAmountLCY: Decimal)
+    procedure CalcCurrencyRealizedGainLoss(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer" temporary; GenJnlLine: Record "Gen. Journal Line"; AppliedAmount: Decimal; AppliedAmountLCY: Decimal)
     var
         RealizedGainLossLCY: Decimal;
     begin
@@ -3341,7 +3341,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcApplication(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; AppliedAmount: Decimal; AppliedAmountLCY: Decimal; OldAppliedAmount: Decimal; PrevNewCVLedgEntryBuf: Record "382"; PrevOldCVLedgEntryBuf: Record "382")
+    local procedure CalcApplication(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; AppliedAmount: Decimal; AppliedAmountLCY: Decimal; OldAppliedAmount: Decimal; PrevNewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; PrevOldCVLedgEntryBuf: Record "CV Ledger Entry Buffer")
     begin
         IF AppliedAmount = 0 THEN
             EXIT;
@@ -3390,9 +3390,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure CalcRemainingPmtDisc(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf2: Record "382")
+    procedure CalcRemainingPmtDisc(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer")
     var
-        TempOldCVLedgEntryBuf2: Record "382";
+        TempOldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         IF ((((NewCVLedgEntryBuf."Document Type" = NewCVLedgEntryBuf."Document Type"::"Credit Memo") OR
             (NewCVLedgEntryBuf."Document Type" = NewCVLedgEntryBuf."Document Type"::Invoice)) AND
@@ -3443,7 +3443,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CalcAmtLCYAdjustment(var CVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line")
+    local procedure CalcAmtLCYAdjustment(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line")
     var
         AdjustedAmountLCY: Decimal;
     begin
@@ -3463,7 +3463,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure InitNewCVLedgEntry(var InitDtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line")
+    procedure InitNewCVLedgEntry(var InitDtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line")
     begin
         InitDtldCVLedgEntryBuf.INIT;
         InitDtldCVLedgEntryBuf."Posting Date" := GenJnlLine."Posting Date";
@@ -3472,7 +3472,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         InitDtldCVLedgEntryBuf."User ID" := USERID;
     end;
 
-    procedure InitOldCVLedgEntry(var InitDtldCVLedgEntryBuf: Record "383"; OldCVLedgEntryBuf: Record "382")
+    procedure InitOldCVLedgEntry(var InitDtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer")
     begin
         InitDtldCVLedgEntryBuf."Cust. Ledger Entry No." := OldCVLedgEntryBuf."Entry No.";
         InitDtldCVLedgEntryBuf."Customer No." := OldCVLedgEntryBuf."CV No.";
@@ -3483,9 +3483,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         InitDtldCVLedgEntryBuf."Initial Document Type" := OldCVLedgEntryBuf."Document Type";
     end;
 
-    local procedure InsertDtldCVLedgEntry(var DtldCVLedgEntryBuf: Record "383"; var CVLedgEntryBuf: Record "382"; InsertZeroAmout: Boolean)
+    local procedure InsertDtldCVLedgEntry(var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; InsertZeroAmout: Boolean)
     var
-        NewDtldCVLedgEntryBuf: Record "383";
+        NewDtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer";
         NextDtldBufferEntryNo: Integer;
     begin
         IF (DtldCVLedgEntryBuf.Amount = 0) AND
@@ -3560,9 +3560,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         DtldCVLedgEntryBuf.RESET;
     end;
 
-    local procedure CustUnrealizedVAT(var CustLedgEntry2: Record "21"; SettledAmount: Decimal)
+    local procedure CustUnrealizedVAT(var CustLedgEntry2: Record "Cust. Ledger Entry"; SettledAmount: Decimal)
     var
-        VATEntry2: Record "254";
+        VATEntry2: Record "VAT Entry";
         VATPart: Decimal;
         VATAmount: Decimal;
         VATBase: Decimal;
@@ -3718,13 +3718,13 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure CustPostApplyCustLedgEntry(var GenJnlLinePostApply: Record "Gen. Journal Line"; var CustLedgEntryPostApply: Record "21")
+    procedure CustPostApplyCustLedgEntry(var GenJnlLinePostApply: Record "Gen. Journal Line"; var CustLedgEntryPostApply: Record "Cust. Ledger Entry")
     var
-        LedgEntryDim: Record "355";
-        CustLedgEntry: Record "21";
-        DtldCustLedgEntry: Record "379";
-        DtldCVLedgEntryBuf: Record "383" temporary;
-        CVLedgEntryBuf: Record "382";
+        LedgEntryDim: Record "Ledger Entry Dimension";
+        CustLedgEntry: Record "Cust. Ledger Entry";
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer" temporary;
+        CVLedgEntryBuf: Record "CV Ledger Entry Buffer";
     begin
         GenJnlLine := GenJnlLinePostApply;
         GenJnlLine."Source Currency Code" := CustLedgEntryPostApply."Currency Code";
@@ -3772,20 +3772,20 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure UnapplyCustLedgEntry(GenJnlLine2: Record "Gen. Journal Line"; DtldCustLedgEntry: Record "379")
+    procedure UnapplyCustLedgEntry(GenJnlLine2: Record "Gen. Journal Line"; DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry")
     var
-        DtldCustLedgEntry2: Record "379";
-        NewDtldCustLedgEntry: Record "379";
-        CustLedgEntry: Record "21";
-        DtldCVLedgEntryBuf: Record "383";
-        VATEntry: Record "254";
+        DtldCustLedgEntry2: Record "Detailed Cust. Ledg. Entry";
+        NewDtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        CustLedgEntry: Record "Cust. Ledger Entry";
+        DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer";
+        VATEntry: Record "VAT Entry";
         VATPostingSetup: Record "VAT Posting Setup";
-        LedgEntryDim: Record "355";
-        GenPostingSetup: Record "252";
-        VATEntryTemp: Record "254" temporary;
-        CurrencyLCY: Record "4";
-        VATEntrySaved: Record "254";
-        VATEntry2: Record "254";
+        LedgEntryDim: Record "Ledger Entry Dimension";
+        GenPostingSetup: Record "General Posting Setup";
+        VATEntryTemp: Record "VAT Entry" temporary;
+        CurrencyLCY: Record Currency;
+        VATEntrySaved: Record "VAT Entry";
+        VATEntry2: Record "VAT Entry";
         TotalAmountLCY: Decimal;
         TotalAmountAddCurr: Decimal;
         NextDtldLedgEntryEntryNo: Integer;
@@ -4140,7 +4140,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         FinishCodeunit;
     end;
 
-    procedure TransferCustLedgEntry(var CVLedgEntryBuf: Record "382"; var CustLedgEntry: Record "21"; CustToCV: Boolean)
+    procedure TransferCustLedgEntry(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var CustLedgEntry: Record "Cust. Ledger Entry"; CustToCV: Boolean)
     begin
         IF CustToCV THEN BEGIN
             CVLedgEntryBuf.TRANSFERFIELDS(CustLedgEntry);
@@ -4161,11 +4161,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure PostDtldCustLedgEntries(GenJnlLine2: Record "Gen. Journal Line"; var DtldCVLedgEntryBuf: Record "383"; CustPostingGr: Record "92"; GLSetup: Record "General Ledger Setup"; NextTransactionNo: Integer; CustLedgEntryInserted: Boolean)
+    local procedure PostDtldCustLedgEntries(GenJnlLine2: Record "Gen. Journal Line"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; CustPostingGr: Record "Customer Posting Group"; GLSetup: Record "General Ledger Setup"; NextTransactionNo: Integer; CustLedgEntryInserted: Boolean)
     var
-        DtldCustLedgEntry: Record "379";
-        Currency: Record "4";
-        GenPostingSetup: Record "252";
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        Currency: Record Currency;
+        GenPostingSetup: Record "General Posting Setup";
         TotalAmountLCY: Decimal;
         TotalAmountAddCurr: Decimal;
         PaymentDiscAcc: Code[20];
@@ -4770,11 +4770,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure AutoEntrForDtldCustLedgEntries(DtldCVLedgEntryBuf: Record "383"; OriginalTransactionNo: Integer)
+    local procedure AutoEntrForDtldCustLedgEntries(DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; OriginalTransactionNo: Integer)
     var
-        GenPostingSetup: Record "252";
+        GenPostingSetup: Record "General Posting Setup";
         VATPostingSetup: Record "VAT Posting Setup";
-        TaxJurisdiction: Record "320";
+        TaxJurisdiction: Record "Tax Jurisdiction";
         AccNo: Code[20];
     begin
         IF (DtldCVLedgEntryBuf."Amount (LCY)" = 0) AND
@@ -5104,7 +5104,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure CustUpdateDebitCredit(Correction: Boolean; var DtldCustLedgEntry: Record "379")
+    local procedure CustUpdateDebitCredit(Correction: Boolean; var DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry")
     begin
         WITH DtldCustLedgEntry DO BEGIN
             IF ((Amount > 0) OR ("Amount (LCY)" > 0)) AND NOT Correction OR
@@ -5123,15 +5123,15 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure ApplyVendLedgEntry(var NewCVLedgEntryBuf: Record "382"; var DtldCVLedgEntryBuf: Record "383"; GenJnlLine: Record "Gen. Journal Line"; ApplnRoundingPrecision: Decimal)
+    local procedure ApplyVendLedgEntry(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; GenJnlLine: Record "Gen. Journal Line"; ApplnRoundingPrecision: Decimal)
     var
-        OldVendLedgEntry: Record "25";
-        OldCVLedgEntryBuf: Record "382";
-        OldCVLedgEntryBuf2: Record "382";
-        NewVendLedgEntry: Record "25";
-        NewCVLedgEntryBuf2: Record "382";
-        OldCVLedgEntryBuf3: Record "382";
-        TempOldVendLedgEntry: Record "25" temporary;
+        OldVendLedgEntry: Record "Vendor Ledger Entry";
+        OldCVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
+        NewVendLedgEntry: Record "Vendor Ledger Entry";
+        NewCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf3: Record "CV Ledger Entry Buffer";
+        TempOldVendLedgEntry: Record "Vendor Ledger Entry" temporary;
         Completed: Boolean;
         AppliedAmount: Decimal;
         AppliedAmountLCY: Decimal;
@@ -5430,13 +5430,13 @@ codeunit 12 "Gen. Jnl.-Post Line"
             END;
     end;
 
-    procedure VendPostApplyVendLedgEntry(var GenJnlLinePostApply: Record "Gen. Journal Line"; var VendLedgEntryPostApply: Record "25")
+    procedure VendPostApplyVendLedgEntry(var GenJnlLinePostApply: Record "Gen. Journal Line"; var VendLedgEntryPostApply: Record "Vendor Ledger Entry")
     var
-        LedgEntryDim: Record "355";
-        VendLedgEntry: Record "25";
-        DtldVendLedgEntry: Record "380";
-        DtldCVLedgEntryBuf: Record "383" temporary;
-        CVLedgEntryBuf: Record "382";
+        LedgEntryDim: Record "Ledger Entry Dimension";
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer" temporary;
+        CVLedgEntryBuf: Record "CV Ledger Entry Buffer";
     begin
         GenJnlLine := GenJnlLinePostApply;
         GenJnlLine."Source Currency Code" := VendLedgEntryPostApply."Currency Code";
@@ -5489,20 +5489,20 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure UnapplyVendLedgEntry(GenJnlLine2: Record "Gen. Journal Line"; DtldVendLedgEntry: Record "380")
+    procedure UnapplyVendLedgEntry(GenJnlLine2: Record "Gen. Journal Line"; DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry")
     var
-        DtldVendLedgEntry2: Record "380";
-        NewDtldVendLedgEntry: Record "380";
-        VendLedgEntry: Record "25";
-        DtldCVLedgEntryBuf: Record "383";
-        VATEntry: Record "254";
+        DtldVendLedgEntry2: Record "Detailed Vendor Ledg. Entry";
+        NewDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer";
+        VATEntry: Record "VAT Entry";
         VATPostingSetup: Record "VAT Posting Setup";
-        LedgEntryDim: Record "355";
-        GenPostingSetup: Record "252";
-        VATEntryTemp: Record "254" temporary;
+        LedgEntryDim: Record "Ledger Entry Dimension";
+        GenPostingSetup: Record "General Posting Setup";
+        VATEntryTemp: Record "VAT Entry" temporary;
         CurrencyLCY: Record "4";
-        VATEntrySaved: Record "254";
-        VatEntry2: Record "254";
+        VATEntrySaved: Record "VAT Entry";
+        VatEntry2: Record "VAT Entry";
         TotalAmountLCY: Decimal;
         TotalAmountAddCurr: Decimal;
         NextDtldLedgEntryEntryNo: Integer;
@@ -5880,7 +5880,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         FinishCodeunit;
     end;
 
-    procedure TransferVendLedgEntry(var CVLedgEntryBuf: Record "382"; var VendLedgEntry: Record "25"; VendToCV: Boolean)
+    procedure TransferVendLedgEntry(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var VendLedgEntry: Record "Vendor Ledger Entry"; VendToCV: Boolean)
     begin
         IF VendToCV THEN BEGIN
             CVLedgEntryBuf."Entry No." := VendLedgEntry."Entry No.";
@@ -6006,11 +6006,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure PostDtldVendLedgEntries(GenJnlLine2: Record "Gen. Journal Line"; var DtldCVLedgEntryBuf: Record "383"; VendPostingGr: Record "93"; NextTransactionNo: Integer; VendLedgEntryInserted: Boolean)
+    procedure PostDtldVendLedgEntries(GenJnlLine2: Record "Gen. Journal Line"; var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; VendPostingGr: Record "Vendor Posting Group"; NextTransactionNo: Integer; VendLedgEntryInserted: Boolean)
     var
-        DtldVendLedgEntry: Record "380";
-        Currency: Record "4";
-        GenPostingSetup: Record "252";
+        DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        Currency: Record Currency;
+        GenPostingSetup: Record "General Posting Setup";
         TotalAmountLCY: Decimal;
         TotalAmountAddCurr: Decimal;
         PaymentDiscAcc: Code[20];
@@ -6583,11 +6583,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure AutoEntrForDtldVendLedgEntries(DtldCVLedgEntryBuf: Record "383"; OriginalTransactionNo: Integer)
+    local procedure AutoEntrForDtldVendLedgEntries(DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer"; OriginalTransactionNo: Integer)
     var
-        GenPostingSetup: Record "252";
+        GenPostingSetup: Record "General Posting Setup";
         VATPostingSetup: Record "VAT Posting Setup";
-        TaxJurisdiction: Record "320";
+        TaxJurisdiction: Record "Tax Jurisdiction";
         AccNo: Code[20];
     begin
         IF (DtldCVLedgEntryBuf."Amount (LCY)" = 0) AND
@@ -6958,7 +6958,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure VendUpdateDebitCredit(Correction: Boolean; var DtldVendLedgEntry: Record "380")
+    local procedure VendUpdateDebitCredit(Correction: Boolean; var DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry")
     begin
         WITH DtldVendLedgEntry DO BEGIN
             IF ((Amount > 0) OR ("Amount (LCY)" > 0)) AND NOT Correction OR
@@ -6977,9 +6977,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure VendUnrealizedVAT(var VendLedgEntry2: Record "25"; SettledAmount: Decimal)
+    local procedure VendUnrealizedVAT(var VendLedgEntry2: Record "Vendor Ledger Entry"; SettledAmount: Decimal)
     var
-        VATEntry2: Record "254";
+        VATEntry2: Record "VAT Entry";
         VATPart: Decimal;
         VATAmount: Decimal;
         VATBase: Decimal;
@@ -7187,9 +7187,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure PostUnrealVATByUnapply(UnrealVATAccNo: Code[20]; VATAccNo: Code[20]; VATEntry: Record "254"; NewVATEntry: Record "254")
+    local procedure PostUnrealVATByUnapply(UnrealVATAccNo: Code[20]; VATAccNo: Code[20]; VATEntry: Record "VAT Entry"; NewVATEntry: Record "VAT Entry")
     var
-        VATEntry2: Record "254";
+        VATEntry2: Record "VAT Entry";
     begin
         InitGLEntry(UnrealVATAccNo, VATEntry.Amount, 0, FALSE, TRUE);
         GLEntry."Additional-Currency Amount" :=
@@ -7222,10 +7222,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure UpdateCalcInterest(var CVLedgEntryBuf: Record "382")
+    local procedure UpdateCalcInterest(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer")
     var
-        CustLedgEntry: Record "21";
-        CVLedgEntryBuf2: Record "382";
+        CustLedgEntry: Record "Cust. Ledger Entry";
+        CVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         WITH CVLedgEntryBuf DO BEGIN
             IF CustLedgEntry.GET("Closed by Entry No.") THEN BEGIN
@@ -7242,7 +7242,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure UpdateCalcInterest2(var CVLedgEntryBuf: Record "382"; var CVLedgEntryBuf2: Record "382")
+    local procedure UpdateCalcInterest2(var CVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var CVLedgEntryBuf2: Record "CV Ledger Entry Buffer")
     begin
         WITH CVLedgEntryBuf DO
             IF "Due Date" < CVLedgEntryBuf2."Document Date" THEN
@@ -7448,7 +7448,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     local procedure InsertFAAllocDim(EntryNo: Integer): Boolean
     var
-        FAAllocDim: Record "5648";
+        FAAllocDim: Record "FA Allocation";
     begin
         IF FAGLPostBuf.GET(EntryNo) THEN BEGIN
             TempFAJnlLineDim.DELETEALL;
@@ -7476,7 +7476,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         EXIT(NonAddCurrCodeOccured);
     end;
 
-    procedure CheckCalcPmtDisc(var NewCVLedgEntryBuf: Record "382"; var OldCVLedgEntryBuf2: Record "382"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDisc(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
     begin
         IF (((NewCVLedgEntryBuf."Document Type" = NewCVLedgEntryBuf."Document Type"::Refund) OR
              (NewCVLedgEntryBuf."Document Type" = NewCVLedgEntryBuf."Document Type"::Payment)) AND
@@ -7518,9 +7518,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
             EXIT(FALSE);
     end;
 
-    procedure CheckCalcPmtDiscCVCust(var NewCVLedgEntryBuf: Record "382"; var OldCustLedgEntry2: Record "21"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDiscCVCust(var NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer"; var OldCustLedgEntry2: Record "Cust. Ledger Entry"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
     var
-        OldCVLedgEntryBuf2: Record "382";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         OldCustLedgEntry2.COPYFILTER(Positive, OldCVLedgEntryBuf2.Positive);
         TransferCustLedgEntry(OldCVLedgEntryBuf2, OldCustLedgEntry2, TRUE);
@@ -7529,10 +7529,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
             NewCVLedgEntryBuf, OldCVLedgEntryBuf2, ApplnRoundingPrecision, CheckFilter, CheckAmount));
     end;
 
-    procedure CheckCalcPmtDiscCust(var NewCustLedgEntry: Record "21"; var OldCustLedgEntry2: Record "21"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDiscCust(var NewCustLedgEntry: Record "Cust. Ledger Entry"; var OldCustLedgEntry2: Record "Cust. Ledger Entry"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
     var
-        NewCVLedgEntryBuf: Record "382";
-        OldCVLedgEntryBuf2: Record "382";
+        NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         TransferCustLedgEntry(NewCVLedgEntryBuf, NewCustLedgEntry, TRUE);
         OldCustLedgEntry2.COPYFILTER(Positive, OldCVLedgEntryBuf2.Positive);
@@ -7542,10 +7542,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
             NewCVLedgEntryBuf, OldCVLedgEntryBuf2, ApplnRoundingPrecision, CheckFilter, CheckAmount));
     end;
 
-    procedure CheckCalcPmtDiscGenJnlCust(GenJnlLine: Record "Gen. Journal Line"; OldCustLedgEntry2: Record "21"; ApplnRoundingPrecision: Decimal; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDiscGenJnlCust(GenJnlLine: Record "Gen. Journal Line"; OldCustLedgEntry2: Record "Cust. Ledger Entry"; ApplnRoundingPrecision: Decimal; CheckAmount: Boolean): Boolean
     var
-        NewCVLedgEntryBuf: Record "382";
-        OldCVLedgEntryBuf2: Record "382";
+        NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         NewCVLedgEntryBuf."Document Type" := GenJnlLine."Document Type";
         NewCVLedgEntryBuf."Posting Date" := GenJnlLine."Posting Date";
@@ -7556,9 +7556,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
             NewCVLedgEntryBuf, OldCVLedgEntryBuf2, ApplnRoundingPrecision, FALSE, CheckAmount));
     end;
 
-    procedure CheckCalcPmtDiscCVVend(var NewCVLedgEntrybuf: Record "382"; var OldVendLedgEntry2: Record "25"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDiscCVVend(var NewCVLedgEntrybuf: Record "CV Ledger Entry Buffer"; var OldVendLedgEntry2: Record "Vendor Ledger Entry"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
     var
-        OldCVLedgEntryBuf2: Record "382";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         OldVendLedgEntry2.COPYFILTER(Positive, OldCVLedgEntryBuf2.Positive);
         TransferVendLedgEntry(OldCVLedgEntryBuf2, OldVendLedgEntry2, TRUE);
@@ -7567,10 +7567,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
             NewCVLedgEntrybuf, OldCVLedgEntryBuf2, ApplnRoundingPrecision, CheckFilter, CheckAmount));
     end;
 
-    procedure CheckCalcPmtDiscVend(var NewVendLedgEntry: Record "25"; var OldVendLedgEntry2: Record "25"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDiscVend(var NewVendLedgEntry: Record "Vendor Ledger Entry"; var OldVendLedgEntry2: Record "Vendor Ledger Entry"; ApplnRoundingPrecision: Decimal; CheckFilter: Boolean; CheckAmount: Boolean): Boolean
     var
-        NewCVLedgEntryBuf: Record "382";
-        OldCVLedgEntryBuf2: Record "382";
+        NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         TransferVendLedgEntry(NewCVLedgEntryBuf, NewVendLedgEntry, TRUE);
         OldVendLedgEntry2.COPYFILTER(Positive, OldCVLedgEntryBuf2.Positive);
@@ -7580,10 +7580,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
             NewCVLedgEntryBuf, OldCVLedgEntryBuf2, ApplnRoundingPrecision, CheckFilter, CheckAmount));
     end;
 
-    procedure CheckCalcPmtDiscGenJnlVend(GenJnlLine: Record "Gen. Journal Line"; OldVendLedgEntry2: Record "25"; ApplnRoundingPrecision: Decimal; CheckAmount: Boolean): Boolean
+    procedure CheckCalcPmtDiscGenJnlVend(GenJnlLine: Record "Gen. Journal Line"; OldVendLedgEntry2: Record "Vendor Ledger Entry"; ApplnRoundingPrecision: Decimal; CheckAmount: Boolean): Boolean
     var
-        NewCVLedgEntryBuf: Record "382";
-        OldCVLedgEntryBuf2: Record "382";
+        NewCVLedgEntryBuf: Record "CV Ledger Entry Buffer";
+        OldCVLedgEntryBuf2: Record "CV Ledger Entry Buffer";
     begin
         NewCVLedgEntryBuf."Document Type" := GenJnlLine."Document Type";
         NewCVLedgEntryBuf."Posting Date" := GenJnlLine."Posting Date";
@@ -7594,23 +7594,23 @@ codeunit 12 "Gen. Jnl.-Post Line"
             NewCVLedgEntryBuf, OldCVLedgEntryBuf2, ApplnRoundingPrecision, FALSE, CheckAmount));
     end;
 
-    procedure Reverse(var ReversalEntry: Record "179"; var ReversalEntry2: Record "179")
+    procedure Reverse(var ReversalEntry: Record "Reversal Entry"; var ReversalEntry2: Record "Reversal Entry")
     var
-        SourceCodeSetup: Record "242";
+        SourceCodeSetup: Record "Source Code Setup";
         GLEntry2: Record "G/L Entry";
         ReversedGLEntry: Record "G/L Entry";
         GLReg2: Record "G/L Register";
-        CustLedgEntry: Record "21";
-        TempCustLedgEntry: Record "21" temporary;
-        VendLedgEntry: Record "25";
-        TempVendLedgEntry: Record "25" temporary;
-        BankAccLedgEntry: Record "271";
-        TempBankAccLedgEntry: Record "271" temporary;
-        VATEntry: Record "254";
-        FALedgEntry: Record "5601";
-        MaintenanceLedgEntry: Record "5625";
-        LedgEntryDim: Record "355";
-        TempRevertTransactionNo: Record "2000000026" temporary;
+        CustLedgEntry: Record "Cust. Ledger Entry";
+        TempCustLedgEntry: Record "Cust. Ledger Entry" temporary;
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        TempVendLedgEntry: Record "Vendor Ledger Entry" temporary;
+        BankAccLedgEntry: Record "Bank Account Ledger Entry";
+        TempBankAccLedgEntry: Record "Bank Account Ledger Entry" temporary;
+        VATEntry: Record "VAT Entry";
+        FALedgEntry: Record "FA Ledger Entry";
+        MaintenanceLedgEntry: Record "Maintenance Ledger Entry";
+        LedgEntryDim: Record "Ledger Entry Dimension";
+        TempRevertTransactionNo: Record "Integer" temporary;
         FAInsertLedgEntry: Codeunit "5600";
         UpdateAnalysisView: Codeunit "410";
         NextDtldCustLedgEntryEntryNo: Integer;
@@ -7821,12 +7821,12 @@ codeunit 12 "Gen. Jnl.-Post Line"
         UpdateAnalysisView.UpdateAll(0, TRUE);
     end;
 
-    local procedure ReverseCustLedgEntry(CustLedgEntry: Record "21"; NewEntryNo: Integer; Correction: Boolean; var NextDtldCustLedgEntryEntryNo: Integer; var ReversalEntry: Record "179")
+    local procedure ReverseCustLedgEntry(CustLedgEntry: Record "Cust. Ledger Entry"; NewEntryNo: Integer; Correction: Boolean; var NextDtldCustLedgEntryEntryNo: Integer; var ReversalEntry: Record "Reversal Entry")
     var
-        NewCustLedgEntry: Record "21";
-        ReversedCustLedgEntry: Record "21";
-        DtldCustLedgEntry: Record "379";
-        NewDtldCustLedgEntry: Record "379";
+        NewCustLedgEntry: Record "Cust. Ledger Entry";
+        ReversedCustLedgEntry: Record "Cust. Ledger Entry";
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        NewDtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
     begin
         WITH NewCustLedgEntry DO BEGIN
             NewCustLedgEntry := CustLedgEntry;
@@ -7906,12 +7906,12 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure ReverseVendLedgEntry(VendLedgEntry: Record "25"; NewEntryNo: Integer; Correction: Boolean; var NextDtldVendLedgEntryEntryNo: Integer; var ReversalEntry: Record "179")
+    local procedure ReverseVendLedgEntry(VendLedgEntry: Record "Vendor Ledger Entry"; NewEntryNo: Integer; Correction: Boolean; var NextDtldVendLedgEntryEntryNo: Integer; var ReversalEntry: Record "Reversal Entry")
     var
-        NewVendLedgEntry: Record "25";
-        ReversedVendLedgEntry: Record "25";
-        DtldVendLedgEntry: Record "380";
-        NewDtldVendLedgEntry: Record "380";
+        NewVendLedgEntry: Record "Vendor Ledger Entry";
+        ReversedVendLedgEntry: Record "Vendor Ledger Entry";
+        DtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
+        NewDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
     begin
         WITH NewVendLedgEntry DO BEGIN
             NewVendLedgEntry := VendLedgEntry;
@@ -7984,10 +7984,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure ReverseBankAccLedgEntry(BankAccLedgEntry: Record "271"; NewEntryNo: Integer; var ReversalEntry: Record "179")
+    local procedure ReverseBankAccLedgEntry(BankAccLedgEntry: Record "Bank Account Ledger Entry"; NewEntryNo: Integer; var ReversalEntry: Record "Reversal Entry")
     var
-        NewBankAccLedgEntry: Record "271";
-        ReversedBankAccLedgEntry: Record "271";
+        NewBankAccLedgEntry: Record "Bank Account Ledger Entry";
+        ReversedBankAccLedgEntry: Record "Bank Account Ledger Entry";
     begin
         WITH NewBankAccLedgEntry DO BEGIN
             NewBankAccLedgEntry := BankAccLedgEntry;
@@ -8029,10 +8029,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    local procedure ReverseVAT(var VATEntry: Record "254")
+    local procedure ReverseVAT(var VATEntry: Record "VAT Entry")
     var
-        NewVATEntry: Record "254";
-        ReversedVATEntry: Record "254";
+        NewVATEntry: Record "VAT Entry";
+        ReversedVATEntry: Record "VAT Entry";
     begin
         IF VATEntry.FINDSET THEN
             REPEAT
@@ -8085,7 +8085,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
             UNTIL VATEntry.NEXT = 0;
     end;
 
-    local procedure SetReversalDescription(EntryType: Option " ","G/L Account",Customer,Vendor,"Bank Account","Fixed Asset",Maintenance,VAT; EntryNo: Integer; var ReversalEntry: Record "179"; var Description: Text[50])
+    local procedure SetReversalDescription(EntryType: Option " ","G/L Account",Customer,Vendor,"Bank Account","Fixed Asset",Maintenance,VAT; EntryNo: Integer; var ReversalEntry: Record "Reversal Entry"; var Description: Text[50])
     begin
         ReversalEntry.RESET;
         ReversalEntry.SETRANGE("Entry Type", EntryType);
@@ -8094,9 +8094,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
             Description := ReversalEntry.Description;
     end;
 
-    local procedure ApplyCustLedgEntryByReversal(CustLedgEntry: Record "21"; CustLedgEntry2: Record "21"; DtldCustLedgEntry2: Record "379"; AppliedEntryNo: Integer; var NextDtldCustLedgEntryEntryNo: Integer)
+    local procedure ApplyCustLedgEntryByReversal(CustLedgEntry: Record "Cust. Ledger Entry"; CustLedgEntry2: Record "Cust. Ledger Entry"; DtldCustLedgEntry2: Record "Detailed Cust. Ledg. Entry"; AppliedEntryNo: Integer; var NextDtldCustLedgEntryEntryNo: Integer)
     var
-        NewDtldCustLedgEntry: Record "379";
+        NewDtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
     begin
         CustLedgEntry2.CALCFIELDS("Remaining Amount", "Remaining Amt. (LCY)");
         CustLedgEntry."Closed by Entry No." := CustLedgEntry2."Entry No.";
@@ -8119,9 +8119,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         NewDtldCustLedgEntry.INSERT;
     end;
 
-    local procedure ApplyVendLedgEntryByReversal(VendLedgEntry: Record "25"; VendLedgEntry2: Record "25"; DtldVendLedgEntry2: Record "380"; AppliedEntryNo: Integer; var NextDtldVendLedgEntryEntryNo: Integer)
+    local procedure ApplyVendLedgEntryByReversal(VendLedgEntry: Record "Vendor Ledger Entry"; VendLedgEntry2: Record "Vendor Ledger Entry"; DtldVendLedgEntry2: Record "Detailed Vendor Ledg. Entry"; AppliedEntryNo: Integer; var NextDtldVendLedgEntryEntryNo: Integer)
     var
-        NewDtldVendLedgEntry: Record "380";
+        NewDtldVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
     begin
         VendLedgEntry2.CALCFIELDS("Remaining Amount", "Remaining Amt. (LCY)");
         VendLedgEntry."Closed by Entry No." := VendLedgEntry2."Entry No.";
@@ -8144,7 +8144,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         NewDtldVendLedgEntry.INSERT;
     end;
 
-    procedure PostPmtDiscountVATByUnapply(ReverseChargeVATAccNo: Code[20]; VATAccNo: Code[20]; VATEntry: Record "254")
+    procedure PostPmtDiscountVATByUnapply(ReverseChargeVATAccNo: Code[20]; VATAccNo: Code[20]; VATEntry: Record "VAT Entry")
     begin
         InitGLEntry(ReverseChargeVATAccNo, VATEntry.Amount, 0, FALSE, TRUE);
         GLEntry."Additional-Currency Amount" :=
@@ -8219,7 +8219,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
         END;
     end;
 
-    procedure InsertVatEntriesFromTemp(var DtldCVLedgEntryBuf: Record "383")
+    procedure InsertVatEntriesFromTemp(var DtldCVLedgEntryBuf: Record "Detailed CV Ledg. Entry Buffer")
     var
         Complete: Boolean;
         LinkedAmount: Decimal;
@@ -8261,10 +8261,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
     var
         TableID: Integer;
         DocType: Option Quote,"Order",Invoice,"Credit Memo","Blanket Order","Return Order"," ";
-        PurchInv: Record "122";
+        PurchInv: Record "Purch. Inv. Header";
         DocNo: Code[20];
-        Transfers: Record "60060";
-        DefaultDim: Record "352";
+        Transfers: Record Transfers;
+        DefaultDim: Record "Default Dimension";
     begin
         //APNT-HR1.0
         WITH GenJnl DO BEGIN
@@ -8307,10 +8307,10 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     procedure PostSettlements()
     var
-        Employee: Record "5200";
-        DeductionLines: Record "60062";
+        Employee: Record Employee;
+        DeductionLines: Record "Payroll Deduction";
         JnlLineDim: Record "Gen. Journal Line Dimension";
-        LedgEntryDim: Record "355";
+        LedgEntryDim: Record "Ledger Entry Dimension";
         EntryNo: Integer;
     begin
         WITH GenJnlLine DO BEGIN
@@ -8431,12 +8431,12 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     procedure InsertPayrollGLEntries(PayrollJnlLine: Record "Gen. Journal Line")
     var
-        Employee: Record "5200";
-        PayrollGLEntries: Record "60040";
-        EmpPostingGrp: Record "60016";
-        HRSetup: Record "5218";
+        Employee: Record Employee;
+        PayrollGLEntries: Record "Payroll G/L Entry";
+        EmpPostingGrp: Record "Employee Posting Group";
+        HRSetup: Record "Human Resources Setup";
         JnlLineDim: Record "Gen. Journal Line Dimension";
-        LedgEntryDim: Record "355";
+        LedgEntryDim: Record "Ledger Entry Dimension";
     begin
         WITH PayrollJnlLine DO BEGIN
             HRSetup.GET;
@@ -8550,7 +8550,7 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     procedure PostBonusAccruals()
     var
-        DimensionValue: Record "349";
+        DimensionValue: Record "Dimension Value";
     begin
         WITH GenJnlLine DO BEGIN
             GLSetup.GET;
@@ -8566,8 +8566,8 @@ codeunit 12 "Gen. Jnl.-Post Line"
 
     procedure ReverseAppliedAgrmtLines(RefDocumentNo: Code[20])
     var
-        AgrmtAppliedEntries: Record "33016872";
-        PaymentSchdule: Record "33016824";
+        AgrmtAppliedEntries: Record "Agrmt Line Application Entries";
+        PaymentSchdule: Record "Payment Schedule Lines";
     begin
         //LG00.02 -
         AgrmtAppliedEntries.SETRANGE("Document No.", RefDocumentNo);
@@ -8593,9 +8593,9 @@ codeunit 12 "Gen. Jnl.-Post Line"
         //LG00.02 +
     end;
 
-    procedure GetAgrmtReverseReason(ReverseEntryRec: Record "179")
+    procedure GetAgrmtReverseReason(ReverseEntryRec: Record "Reversal Entry")
     var
-        AgrmtReverseReason: Record "33016873";
+        AgrmtReverseReason: Record "Agrmt Reverse Reason";
     begin
         //LG00.02 -
         CLEAR(ReverseReason);

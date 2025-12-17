@@ -19,12 +19,12 @@ codeunit 230 GenJnlManagement
         Text003: Label 'Recurring General Journal';
         Text004: Label 'DEFAULT';
         Text005: Label 'Default Journal';
-        LastGenJnlLine: Record "81";
+        LastGenJnlLine: Record "Gen. Journal Line";
         OpenFromBatch: Boolean;
 
-    procedure TemplateSelection(FormID: Integer; FormTemplate: Option General,Sales,Purchases,"Cash Receipts",Payments,Assets,Intercompany,Jobs,Payroll; RecurringJnl: Boolean; var GenJnlLine: Record "81"; var JnlSelected: Boolean)
+    procedure TemplateSelection(FormID: Integer; FormTemplate: Option General,Sales,Purchases,"Cash Receipts",Payments,Assets,Intercompany,Jobs,Payroll; RecurringJnl: Boolean; var GenJnlLine: Record "Gen. Journal Line"; var JnlSelected: Boolean)
     var
-        GenJnlTemplate: Record "80";
+        GenJnlTemplate: Record "Gen. Journal Template";
     begin
         JnlSelected := TRUE;
 
@@ -74,11 +74,11 @@ codeunit 230 GenJnlManagement
         END;
     end;
 
-    procedure TemplateSelectionFromBatch(var GenJnlBatch: Record "232")
+    procedure TemplateSelectionFromBatch(var GenJnlBatch: Record "Gen. Journal Batch")
     var
-        GenJnlLine: Record "81";
+        GenJnlLine: Record "Gen. Journal Line";
         JnlSelected: Boolean;
-        GenJnlTemplate: Record "80";
+        GenJnlTemplate: Record "Gen. Journal Template";
     begin
         OpenFromBatch := TRUE;
         GenJnlTemplate.GET(GenJnlBatch."Journal Template Name");
@@ -94,7 +94,7 @@ codeunit 230 GenJnlManagement
         FORM.RUN(GenJnlTemplate."Form ID", GenJnlLine);
     end;
 
-    procedure OpenJnl(var CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "81")
+    procedure OpenJnl(var CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "Gen. Journal Line")
     begin
         CheckTemplateName(GenJnlLine.GETRANGEMAX("Journal Template Name"), CurrentJnlBatchName);
         GenJnlLine.FILTERGROUP := 2;
@@ -102,11 +102,11 @@ codeunit 230 GenJnlManagement
         GenJnlLine.FILTERGROUP := 0;
     end;
 
-    procedure OpenJnlBatch(var GenJnlBatch: Record "232")
+    procedure OpenJnlBatch(var GenJnlBatch: Record "Gen. Journal Batch")
     var
-        GenJnlTemplate: Record "80";
-        GenJnlLine: Record "81";
-        GenJnlBatch2: Record "232";
+        GenJnlTemplate: Record "Gen. Journal Template";
+        GenJnlLine: Record "Gen. Journal Line";
+        GenJnlBatch2: Record "Gen. Journal Batch";
         JnlSelected: Boolean;
     begin
         IF GenJnlBatch.GETFILTER("Journal Template Name") <> '' THEN
@@ -159,7 +159,7 @@ codeunit 230 GenJnlManagement
 
     procedure CheckTemplateName(CurrentJnlTemplateName: Code[10]; var CurrentJnlBatchName: Code[10])
     var
-        GenJnlBatch: Record "232";
+        GenJnlBatch: Record "Gen. Journal Batch";
     begin
         GenJnlBatch.SETRANGE("Journal Template Name", CurrentJnlTemplateName);
         IF NOT GenJnlBatch.GET(CurrentJnlTemplateName, CurrentJnlBatchName) THEN BEGIN
@@ -176,14 +176,14 @@ codeunit 230 GenJnlManagement
         END;
     end;
 
-    procedure CheckName(CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "81")
+    procedure CheckName(CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "Gen. Journal Line")
     var
-        GenJnlBatch: Record "232";
+        GenJnlBatch: Record "Gen. Journal Batch";
     begin
         GenJnlBatch.GET(GenJnlLine.GETRANGEMAX("Journal Template Name"), CurrentJnlBatchName);
     end;
 
-    procedure SetName(CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "81")
+    procedure SetName(CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "Gen. Journal Line")
     begin
         GenJnlLine.FILTERGROUP := 2;
         GenJnlLine.SETRANGE("Journal Batch Name", CurrentJnlBatchName);
@@ -191,10 +191,10 @@ codeunit 230 GenJnlManagement
         IF GenJnlLine.FIND('-') THEN;
     end;
 
-    procedure LookupName(var CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "81")
+    procedure LookupName(var CurrentJnlBatchName: Code[10]; var GenJnlLine: Record "Gen. Journal Line")
     var
-        GenJnlBatch: Record "232";
-        LMSetup: Record "50502";
+        GenJnlBatch: Record "Gen. Journal Batch";
+        LMSetup: Record "Lease Management Setup";
     begin
         COMMIT;
         GenJnlBatch."Journal Template Name" := GenJnlLine.GETRANGEMAX("Journal Template Name");
@@ -215,14 +215,14 @@ codeunit 230 GenJnlManagement
         END;
     end;
 
-    procedure GetAccounts(var GenJnlLine: Record "81"; var AccName: Text[50]; var BalAccName: Text[50])
+    procedure GetAccounts(var GenJnlLine: Record "Gen. Journal Line"; var AccName: Text[50]; var BalAccName: Text[50])
     var
-        GLAcc: Record "15";
-        Cust: Record "18";
-        Vend: Record "23";
-        BankAcc: Record "270";
-        FA: Record "5600";
-        IC: Record "413";
+        GLAcc: Record "G/L Account";
+        Cust: Record Customer;
+        Vend: Record Vendor;
+        BankAcc: Record "Bank Account";
+        FA: Record "Fixed Asset";
+        IC: Record "IC Partner";
     begin
         IF (GenJnlLine."Account Type" <> LastGenJnlLine."Account Type") OR
            (GenJnlLine."Account No." <> LastGenJnlLine."Account No.")
@@ -282,9 +282,9 @@ codeunit 230 GenJnlManagement
         LastGenJnlLine := GenJnlLine;
     end;
 
-    procedure CalcBalance(var GenJnlLine: Record "81"; LastGenJnlLine: Record "81"; var Balance: Decimal; var TotalBalance: Decimal; var ShowBalance: Boolean; var ShowTotalBalance: Boolean)
+    procedure CalcBalance(var GenJnlLine: Record "Gen. Journal Line"; LastGenJnlLine: Record "Gen. Journal Line"; var Balance: Decimal; var TotalBalance: Decimal; var ShowBalance: Boolean; var ShowTotalBalance: Boolean)
     var
-        TempGenJnlLine: Record "81";
+        TempGenJnlLine: Record "Gen. Journal Line";
     begin
         TempGenJnlLine.COPYFILTERS(GenJnlLine);
         ShowTotalBalance := TempGenJnlLine.CALCSUMS("Balance (LCY)");

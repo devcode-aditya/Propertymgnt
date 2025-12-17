@@ -14,15 +14,15 @@ codeunit 33016802 "Payment Schedule Management"
         TotalPaymentLineRatio: Integer;
         Text004: Label 'No. of payment term lines defined must be equal to No. of Invoices  %1 for Agreement No. %2 and Agreement Line %3';
         Text005: Label 'Payment Schedule lines created for Agreement %1';
-        PremiseMgtSetup: Record "33016826";
+        PremiseMgtSetup: Record "Premise Management Setup";
 
-    procedure CreatePaymentScheduleLines(AgreementRec: Record "33016815")
+    procedure CreatePaymentScheduleLines(AgreementRec: Record "Agreement Header")
     var
-        PayScheduleLineRec: Record "33016824";
-        PaymentScheduleLines: Record "33016824";
-        AgreementLineRec: Record "33016816";
+        PayScheduleLineRec: Record "Payment Schedule Lines";
+        PaymentScheduleLines: Record "Payment Schedule Lines";
+        AgreementLineRec: Record "Agreement Line";
         PaymentCounter: Decimal;
-        PaymentLinesRec: Record "33016817";
+        PaymentLinesRec: Record "Payment Term Line";
         ModifyAgreement: Boolean;
         Percentwise: Boolean;
         Amountwise: Boolean;
@@ -306,11 +306,11 @@ codeunit 33016802 "Payment Schedule Management"
             MESSAGE(Text001, AgreementRec."Agreement Type", AgreementRec."No.");
     end;
 
-    procedure OpenPaymentScheduleLines(AgreementLine: Record "33016816")
+    procedure OpenPaymentScheduleLines(AgreementLine: Record "Agreement Line")
     var
-        PaymentScheduleRec: Record "33016824";
+        PaymentScheduleRec: Record "Payment Schedule Lines";
         PaymentScheduleForm: Form "33016851";
-        AgreementHeader: Record "33016815";
+        AgreementHeader: Record "Agreement Header";
     begin
         PaymentScheduleRec.RESET;
         PaymentScheduleRec.SETRANGE("Agreement Type", AgreementLine."Agreement Type");
@@ -327,9 +327,9 @@ codeunit 33016802 "Payment Schedule Management"
         PaymentScheduleForm.RUNMODAL;
     end;
 
-    procedure GetTotalRatio(PaymentTermLine: Record "33016817"): Decimal
+    procedure GetTotalRatio(PaymentTermLine: Record "Payment Term Line"): Decimal
     var
-        PaymentTermLine1: Record "33016817";
+        PaymentTermLine1: Record "Payment Term Line";
         TotalRatio: Integer;
     begin
         PaymentTermLine1.RESET;

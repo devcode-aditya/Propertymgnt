@@ -84,7 +84,7 @@ codeunit 33016804 "SMS Integration"
     end;
 
     var
-        SMSIntegrationSetup: Record "33016850";
+        SMSIntegrationSetup: Record "SMS Integration Setup";
         ReceiverMobileNo: Text[30];
         ReceiverDescription: Text[256];
         filepath: Text[1000];

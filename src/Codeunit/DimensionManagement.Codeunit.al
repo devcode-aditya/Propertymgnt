@@ -38,7 +38,7 @@ codeunit 408 DimensionManagement
         TempDimBuf2: Record "Dimension Buffer" temporary;
         ObjTransl: Record "Object Translation";
         DimValComb: Record "Dimension Value Combination";
-        JobTaskDimTemp: Record "1002" temporary;
+        JobTaskDimTemp: Record "Job Task" temporary;
         TempDimCombInitialized: Boolean;
         TempDimCombEmpty: Boolean;
         DimCombErr: Text[250];
@@ -99,7 +99,7 @@ codeunit 408 DimensionManagement
         EXIT(CheckDimComb);
     end;
 
-    procedure CheckServContractDimComb(var ServContractDim: Record "389"): Boolean
+    procedure CheckServContractDimComb(var ServContractDim: Record "Service Contract Dimension"): Boolean
     var
         i: Integer;
     begin
@@ -143,7 +143,7 @@ codeunit 408 DimensionManagement
 
     local procedure CheckDimComb(): Boolean
     var
-        DimComb: Record "350";
+        DimComb: Record "Dimension Combination";
         DimValComb: Record "Dimension Value Combination";
         CurrentDimCode: Code[20];
         CurrentDimValCode: Code[20];
@@ -266,7 +266,7 @@ codeunit 408 DimensionManagement
 
     procedure UpdateDefaultDim(TableID: Integer; No: Code[20]; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        DefaultDim: Record "352";
+        DefaultDim: Record "Default Dimension";
     begin
         GetGLSetup;
         IF DefaultDim.GET(TableID, No, GLSetupShortcutDimCode[1]) THEN
@@ -288,8 +288,8 @@ codeunit 408 DimensionManagement
     procedure UpdateJnlLineDefaultDim(TableID: Integer; JnlTemplateName: Code[10]; JnlBatchName: Code[10]; JnlLineNo: Integer; AllocationLineNo: Integer; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
         JnlLineDim: Record "Gen. Journal Line Dimension";
-        Dim: Record "348";
-        DimValue: Record "349";
+        Dim: Record Dimension;
+        DimValue: Record "Dimension Value";
         RecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
     begin
@@ -371,7 +371,7 @@ codeunit 408 DimensionManagement
 
     procedure GetPreviousProdDocDefaultDim(TableID: Integer; DocStatus: Option; DocNo: Code[20]; DocLineNo: Integer; LineNo: Integer; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
     begin
         GetGLSetup;
         TempDimBuf1.RESET;
@@ -467,7 +467,7 @@ codeunit 408 DimensionManagement
 
     procedure UpdateProdDocDefaultDim(TableID: Integer; DocStatus: Option; DocNo: Code[20]; DocLineNo: Integer; LineNo: Integer; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
         RecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
     begin
@@ -512,7 +512,7 @@ codeunit 408 DimensionManagement
 
     procedure UpdateServcontractDim(TableID: Integer; Type: Option; No: Code[20]; LineNo: Integer; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        ServContractDim: Record "389";
+        ServContractDim: Record "Service Contract Dimension";
         RecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
     begin
@@ -559,9 +559,9 @@ codeunit 408 DimensionManagement
 
     procedure GetDefaultDim(TableID: array[10] of Integer; No: array[10] of Code[20]; "Source Code": Code[20]; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        DefaultDimPriority1: Record "354";
-        DefaultDimPriority2: Record "354";
-        DefaultDim: Record "352";
+        DefaultDimPriority1: Record "Default Dimension Priority";
+        DefaultDimPriority2: Record "Default Dimension Priority";
+        DefaultDim: Record "Default Dimension";
         i: Integer;
         j: Integer;
         NoFilter: array[2] of Code[20];
@@ -670,7 +670,7 @@ codeunit 408 DimensionManagement
 
     procedure GetProdDocDim(TableID: array[10] of Integer; No: array[10] of Code[20]; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
         i: Integer;
         No2: Integer;
     begin
@@ -816,7 +816,7 @@ codeunit 408 DimensionManagement
 
     procedure DeleteDefaultDim(TableID: Integer; No: Code[20])
     var
-        DefaultDim: Record "352";
+        DefaultDim: Record "Default Dimension";
     begin
         DefaultDim.SETRANGE("Table ID", TableID);
         DefaultDim.SETRANGE("No.", No);
@@ -862,7 +862,7 @@ codeunit 408 DimensionManagement
 
     procedure DeleteProdDocDim(TableID: Integer; DocStatus: Option; DocNo: Code[20]; DocLineNo: Integer; LineNo: Integer)
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
     begin
         ProdDocDim.SETRANGE("Table ID", TableID);
         ProdDocDim.SETRANGE("Document Status", DocStatus);
@@ -875,7 +875,7 @@ codeunit 408 DimensionManagement
 
     procedure DeleteServContractDim(TableId: Integer; Type: Option; ServContractNo: Code[20])
     var
-        ServContractDim: Record "389";
+        ServContractDim: Record "Service Contract Dimension";
     begin
         ServContractDim.SETRANGE("Table ID", TableId);
         ServContractDim.SETRANGE(Type, Type);
@@ -886,7 +886,7 @@ codeunit 408 DimensionManagement
 
     procedure LookupDimValueCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     var
-        DimVal: Record "349";
+        DimVal: Record "Dimension Value";
         GLSetup: Record "General Ledger Setup";
     begin
         GetGLSetup;
@@ -904,7 +904,7 @@ codeunit 408 DimensionManagement
 
     procedure ValidateDimValueCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     var
-        DimVal: Record "349";
+        DimVal: Record "Dimension Value";
         GLSetup: Record "General Ledger Setup";
     begin
         GetGLSetup;
@@ -927,7 +927,7 @@ codeunit 408 DimensionManagement
 
     procedure SaveDefaultDim(TableID: Integer; No: Code[20]; FieldNumber: Integer; ShortcutDimCode: Code[20])
     var
-        DefaultDim: Record "352";
+        DefaultDim: Record "Default Dimension";
         RecRef: RecordRef;
         xRecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
@@ -1150,7 +1150,7 @@ codeunit 408 DimensionManagement
 
     procedure ShowProdDocDim(TableID: Integer; DocStatus: Option; DocNo: Code[20]; DocLineNo: Integer; LineNo: Integer; var ShortcutDimCode: array[8] of Code[20])
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
         i: Integer;
     begin
         GetGLSetup;
@@ -1164,7 +1164,7 @@ codeunit 408 DimensionManagement
 
     procedure SaveProdDocDim(TableID: Integer; DocStatus: Option; DocNo: Code[20]; DocLineNo: Integer; LineNo: Integer; FieldNumber: Integer; ShortcutDimCode: Code[20])
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
         RecRef: RecordRef;
         xRecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
@@ -1295,7 +1295,7 @@ codeunit 408 DimensionManagement
 
     procedure SaveServContractDim(TableID: Integer; Type: Option; No: Code[20]; LineNo: Integer; FieldNumber: Integer; ShortcutDimCode: Code[20])
     var
-        ServContrDim: Record "389";
+        ServContrDim: Record "Service Contract Dimension";
         RecRef: RecordRef;
         xRecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
@@ -1452,7 +1452,7 @@ codeunit 408 DimensionManagement
         EXIT(CheckValuePosting(TableID, No));
     end;
 
-    procedure CheckServContrDimValuePosting(var ServContractDim: Record "389"; TableID: array[10] of Integer; No: array[10] of Code[20]): Boolean
+    procedure CheckServContrDimValuePosting(var ServContractDim: Record "Service Contract Dimension"; TableID: array[10] of Integer; No: array[10] of Code[20]): Boolean
     var
         i: Integer;
     begin
@@ -1481,7 +1481,7 @@ codeunit 408 DimensionManagement
 
     local procedure CheckValuePosting(TableID: array[10] of Integer; No: array[10] of Code[20]): Boolean
     var
-        DefaultDim: Record "352";
+        DefaultDim: Record "Default Dimension";
         i: Integer;
         j: Integer;
         NoFilter: array[2] of Text[250];
@@ -1598,9 +1598,9 @@ codeunit 408 DimensionManagement
         EXIT(DimValuePostingErr);
     end;
 
-    procedure SetupObjectNoList(var TempObject: Record "2000000001" temporary)
+    procedure SetupObjectNoList(var TempObject: Record AllObj temporary)
     var
-        "Object": Record "2000000001";
+        "Object": Record AllObj;
         TableIDArray: array[29] of Integer;
         Index: Integer;
     begin
@@ -1652,7 +1652,7 @@ codeunit 408 DimensionManagement
 
     procedure MoveJnlLineDimToLedgEntryDim(var JnlLineDim: Record "Gen. Journal Line Dimension"; ToTableID: Integer; ToEntryNo: Integer)
     var
-        LedgEntryDim: Record "355";
+        LedgEntryDim: Record "G/L Entry - Dimension";
     begin
         WITH JnlLineDim DO
             IF FINDSET THEN
@@ -1705,7 +1705,7 @@ codeunit 408 DimensionManagement
         END;
     end;
 
-    procedure MoveLedgEntryDimToJnlLineDim(var FromLedgEntryDim: Record "355"; var ToJnlLineDim: Record "Gen. Journal Line Dimension"; ToTableID: Integer; ToJnlTemplateName: Code[10]; ToJnlBatchName: Code[10]; ToJnlLineNo: Integer; ToAllocLineNo: Integer)
+    procedure MoveLedgEntryDimToJnlLineDim(var FromLedgEntryDim: Record "G/L Entry - Dimension"; var ToJnlLineDim: Record "Gen. Journal Line Dimension"; ToTableID: Integer; ToJnlTemplateName: Code[10]; ToJnlBatchName: Code[10]; ToJnlLineNo: Integer; ToAllocLineNo: Integer)
     begin
         WITH FromLedgEntryDim DO
             IF FINDSET THEN
@@ -1738,7 +1738,7 @@ codeunit 408 DimensionManagement
 
     procedure MoveDimBufToLedgEntryDim(var FromDimBuf: Record "Dimension Buffer"; ToTableID: Integer; ToEntryNo: Integer)
     var
-        LedgEntryDim: Record "355";
+        LedgEntryDim: Record "G/L Entry - Dimension";
     begin
         WITH FromDimBuf DO
             IF FINDSET THEN
@@ -1769,7 +1769,7 @@ codeunit 408 DimensionManagement
 
     procedure MoveDimBufToGLBudgetDim(var FromDimBuf: Record "Dimension Buffer"; ToEntryNo: Integer)
     var
-        GLBudgetDim: Record "361";
+        GLBudgetDim: Record "G/L Budget Dimension";
     begin
         WITH FromDimBuf DO
             IF FINDSET THEN
@@ -1795,7 +1795,7 @@ codeunit 408 DimensionManagement
         EXIT(DimensionChanged);
     end;
 
-    procedure CopyLedgEntryDimToJnlLineDim(var FromLedgEntryDim: Record "355"; var ToJnlLineDim: Record "Gen. Journal Line Dimension")
+    procedure CopyLedgEntryDimToJnlLineDim(var FromLedgEntryDim: Record "G/L Entry - Dimension"; var ToJnlLineDim: Record "Gen. Journal Line Dimension")
     begin
         WITH FromLedgEntryDim DO
             IF FINDSET THEN
@@ -1866,7 +1866,7 @@ codeunit 408 DimensionManagement
                 UNTIL NEXT = 0;
     end;
 
-    procedure CopySCDimToDocDim(var FromServContractDim: Record "389"; TableId: Integer; DocumentType: Option; DocumentNo: Code[20]; LineNo: Integer)
+    procedure CopySCDimToDocDim(var FromServContractDim: Record "Service Contract Dimension"; TableId: Integer; DocumentType: Option; DocumentNo: Code[20]; LineNo: Integer)
     var
         ToDocDim: Record "Document Dimension";
     begin
@@ -1935,7 +1935,7 @@ codeunit 408 DimensionManagement
 
     procedure CheckDim(DimCode: Code[20]): Boolean
     var
-        Dim: Record "348";
+        Dim: Record Dimension;
     begin
         IF Dim.GET(DimCode) THEN BEGIN
             IF Dim.Blocked THEN BEGIN
@@ -1953,7 +1953,7 @@ codeunit 408 DimensionManagement
 
     procedure CheckDimValue(DimCode: Code[20]; DimValCode: Code[20]): Boolean
     var
-        DimVal: Record "349";
+        DimVal: Record "Dimension Value";
     begin
         IF (DimCode <> '') AND (DimValCode <> '') THEN BEGIN
             IF DimVal.GET(DimCode, DimValCode) THEN BEGIN
@@ -1989,7 +1989,7 @@ codeunit 408 DimensionManagement
 
     procedure MoveDocDimToLedgEntryDim(var DocDim: Record "Document Dimension"; ToTableID: Integer; ToEntryNo: Integer)
     var
-        LedgEntryDim: Record "355";
+        LedgEntryDim: Record "G/L Entry - Dimension";
     begin
         WITH DocDim DO
             IF FINDSET THEN
@@ -2039,7 +2039,7 @@ codeunit 408 DimensionManagement
                 UNTIL NEXT = 0;
     end;
 
-    procedure MoveLedgEntryDimToDocDim(var LedgEntryDim: Record "355"; ToTableID: Integer; ToNo: Code[20]; ToLineNo: Integer; ToType: Integer)
+    procedure MoveLedgEntryDimToDocDim(var LedgEntryDim: Record "G/L Entry - Dimension"; ToTableID: Integer; ToNo: Code[20]; ToLineNo: Integer; ToType: Integer)
     var
         DocDim: Record "Document Dimension";
     begin
@@ -2057,9 +2057,9 @@ codeunit 408 DimensionManagement
                 UNTIL NEXT = 0;
     end;
 
-    procedure MoveProdDocDimToProdDocDim(var FromProdDocDim: Record "358"; ToTableID: Integer; ToStatus: Option; ToNo: Code[20])
+    procedure MoveProdDocDimToProdDocDim(var FromProdDocDim: Record "Production Document Dimension"; ToTableID: Integer; ToStatus: Option; ToNo: Code[20])
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
     begin
         WITH FromProdDocDim DO
             IF FINDSET THEN
@@ -2078,7 +2078,7 @@ codeunit 408 DimensionManagement
 
     procedure MoveJnlLineDimToProdDocDim(var JnlLineDim: Record "Gen. Journal Line Dimension"; ToTableID: Integer; ToStatus: Option; ToNo: Code[20]; ToDocLineNo: Integer; ToLineNo: Integer)
     var
-        ProdDocDim: Record "358";
+        ProdDocDim: Record "Production Document Dimension";
     begin
         WITH JnlLineDim DO
             IF FINDSET THEN
@@ -2133,8 +2133,8 @@ codeunit 408 DimensionManagement
 
     procedure CopyLedgEntryDimToLedgEntryDim(FromTableID: Integer; FromEntryNo: Integer; ToTableID: Integer; ToEntryNo: Integer)
     var
-        FromLedgEntryDim: Record "355";
-        ToLedgEntryDim: Record "355";
+        FromLedgEntryDim: Record "G/L Entry - Dimension";
+        ToLedgEntryDim: Record "G/L Entry - Dimension";
     begin
         WITH FromLedgEntryDim DO BEGIN
             SETRANGE("Table ID", FromTableID);
@@ -2175,7 +2175,7 @@ codeunit 408 DimensionManagement
 
     procedure LookupDimValueCodeNoUpdate(FieldNumber: Integer)
     var
-        DimVal: Record "349";
+        DimVal: Record "Dimension Value";
         GLSetup: Record "General Ledger Setup";
     begin
         GetGLSetup;
@@ -2216,7 +2216,7 @@ codeunit 408 DimensionManagement
 
     procedure CopyJnlLineDimToICJnlDim(TableID: Integer; TransactionNo: Integer; PartnerCode: Code[20]; TransactionSource: Option Rejected,Created; LineNo: Integer; var TempJnlLineDim: Record "Gen. Journal Line Dimension" temporary)
     var
-        InOutBoxJnlLineDim: Record "423";
+        InOutBoxJnlLineDim: Record "IC In/Outbox Jnl. Line Dim.";
         ICDim: Code[20];
         ICDimValue: Code[20];
     begin
@@ -2237,7 +2237,7 @@ codeunit 408 DimensionManagement
             UNTIL TempJnlLineDim.NEXT = 0;
     end;
 
-    procedure CopyICJnlDimToJnlLineDim(TableID: Integer; var TempICInOutBoxJnlLineDim: Record "423" temporary; GenJnlLine: Record "81")
+    procedure CopyICJnlDimToJnlLineDim(TableID: Integer; var TempICInOutBoxJnlLineDim: Record "IC In/Outbox Jnl. Line Dim." temporary; GenJnlLine: Record "81")
     var
         JournalLineDim: Record "Gen. Journal Line Dimension";
         GLSetup: Record "General Ledger Setup";
@@ -2267,7 +2267,7 @@ codeunit 408 DimensionManagement
             UNTIL TempICInOutBoxJnlLineDim.NEXT = 0;
     end;
 
-    procedure CopyICJnlDimToICJnlDim(var FromInOutBoxLineDim: Record "423"; var ToInOutBoxlineDim: Record "423")
+    procedure CopyICJnlDimToICJnlDim(var FromInOutBoxLineDim: Record "IC In/Outbox Jnl. Line Dim."; var ToInOutBoxlineDim: Record "IC In/Outbox Jnl. Line Dim.")
     begin
         IF FromInOutBoxLineDim.FINDSET THEN
             REPEAT
@@ -2278,7 +2278,7 @@ codeunit 408 DimensionManagement
 
     procedure CopyDocDimtoICDocDim(TableID: Integer; TransactionNo: Integer; PartnerCode: Code[20]; TransactionSource: Option Rejected,Created; LineNo: Integer; var TempDocDim: Record "Document Dimension" temporary)
     var
-        InOutBoxDocDim: Record "442";
+        InOutBoxDocDim: Record "IC Document Dimension";
         ICDim: Code[20];
         ICDimValue: Code[20];
     begin
@@ -2299,7 +2299,7 @@ codeunit 408 DimensionManagement
             UNTIL TempDocDim.NEXT = 0;
     end;
 
-    procedure CopyICDocDimtoICDocDim(FromSourceICDocDim: Record "442"; var ToSourceICDocDim: Record "442"; ToTableID: Integer; ToTransactionSource: Integer)
+    procedure CopyICDocDimtoICDocDim(FromSourceICDocDim: Record "IC Document Dimension"; var ToSourceICDocDim: Record "IC Document Dimension"; ToTableID: Integer; ToTransactionSource: Integer)
     begin
         WITH FromSourceICDocDim DO BEGIN
             SetICDocDimFilters(FromSourceICDocDim, "Table ID", "Transaction No.", "IC Partner Code", "Transaction Source", "Line No.");
@@ -2313,7 +2313,7 @@ codeunit 408 DimensionManagement
         END;
     end;
 
-    procedure MoveICDocDimtoICDocDim(FromSourceICDocDim: Record "442"; var ToSourceICDocDim: Record "442"; ToTableID: Integer; ToTransactionSource: Integer)
+    procedure MoveICDocDimtoICDocDim(FromSourceICDocDim: Record "IC Document Dimension"; var ToSourceICDocDim: Record "IC Document Dimension"; ToTableID: Integer; ToTransactionSource: Integer)
     begin
         WITH FromSourceICDocDim DO BEGIN
             SetICDocDimFilters(FromSourceICDocDim, "Table ID", "Transaction No.", "IC Partner Code", "Transaction Source", "Line No.");
@@ -2328,7 +2328,7 @@ codeunit 408 DimensionManagement
         END;
     end;
 
-    procedure SetICDocDimFilters(var ICDocDim: Record "442"; TableID: Integer; TransactionNo: Integer; PartnerCode: Code[20]; TransactionSource: Integer; LineNo: Integer)
+    procedure SetICDocDimFilters(var ICDocDim: Record "IC Document Dimension"; TableID: Integer; TransactionNo: Integer; PartnerCode: Code[20]; TransactionSource: Integer; LineNo: Integer)
     begin
         ICDocDim.RESET;
         ICDocDim.SETRANGE("Table ID", TableID);
@@ -2340,7 +2340,7 @@ codeunit 408 DimensionManagement
 
     procedure DeleteICDocDim("Table ID": Integer; "IC Transaction No.": Integer; "IC Partner Code": Code[20]; "Transaction Source": Option Rejected,Created; LineNo: Integer)
     var
-        ICDocDim: Record "442";
+        ICDocDim: Record "IC Document Dimension";
     begin
         SetICDocDimFilters(ICDocDim, "Table ID", "IC Transaction No.", "IC Partner Code", "Transaction Source", LineNo);
         IF NOT ICDocDim.ISEMPTY THEN
@@ -2349,7 +2349,7 @@ codeunit 408 DimensionManagement
 
     procedure DeleteICJnlDim("Table ID": Integer; "IC Transaction No.": Integer; "IC Partner Code": Code[20]; "Transaction Source": Option Rejected,Created; LineNo: Integer)
     var
-        ICJnlDim: Record "423";
+        ICJnlDim: Record "IC In/Outbox Jnl. Line Dim.";
     begin
         ICJnlDim.SETRANGE("Table ID", "Table ID");
         ICJnlDim.SETRANGE("Transaction No.", "IC Transaction No.");
@@ -2362,7 +2362,7 @@ codeunit 408 DimensionManagement
 
     procedure ConvertICDimtoDim(FromICDim: Code[20]) DimCode: Code[20]
     var
-        ICDim: Record "411";
+        ICDim: Record "IC Dimension";
     begin
         IF ICDim.GET(FromICDim) THEN
             DimCode := ICDim."Map-to Dimension Code";
@@ -2370,7 +2370,7 @@ codeunit 408 DimensionManagement
 
     procedure ConvertICDimValuetoDimValue(FromICDim: Code[20]; FromICDimValue: Code[20]) DimValueCode: Code[20]
     var
-        ICDimValue: Record "412";
+        ICDimValue: Record "IC Dimension Value";
     begin
         IF ICDimValue.GET(FromICDim, FromICDimValue) THEN
             DimValueCode := ICDimValue."Map-to Dimension Value Code";
@@ -2378,7 +2378,7 @@ codeunit 408 DimensionManagement
 
     procedure ConvertDimtoICDim(FromDim: Code[20]) ICDimCode: Code[20]
     var
-        Dim: Record "348";
+        Dim: Record Dimension;
     begin
         IF Dim.GET(FromDim) THEN
             ICDimCode := Dim."Map-to IC Dimension Code";
@@ -2386,7 +2386,7 @@ codeunit 408 DimensionManagement
 
     procedure ConvertDimValuetoICDimVal(FromDim: Code[20]; FromDimValue: Code[20]) ICDimValueCode: Code[20]
     var
-        DimValue: Record "349";
+        DimValue: Record "Dimension Value";
     begin
         IF DimValue.GET(FromDim, FromDimValue) THEN
             ICDimValueCode := DimValue."Map-to IC Dimension Value Code";
@@ -2442,7 +2442,7 @@ codeunit 408 DimensionManagement
 
     procedure MoveDimBufToItemBudgetDim(var FromDimBuf: Record "Dimension Buffer"; ToEntryNo: Integer)
     var
-        ItemBudgetDim: Record "7135";
+        ItemBudgetDim: Record "Item Budget Dimension";
     begin
         WITH FromDimBuf DO
             IF FINDSET THEN
@@ -2456,7 +2456,7 @@ codeunit 408 DimensionManagement
 
     procedure CheckICDimValue(ICDimCode: Code[20]; ICDimValCode: Code[20]): Boolean
     var
-        ICDimVal: Record "412";
+        ICDimVal: Record "IC Dimension Value";
     begin
         IF (ICDimCode <> '') AND (ICDimValCode <> '') THEN BEGIN
             IF ICDimVal.GET(ICDimCode, ICDimValCode) THEN BEGIN
@@ -2487,7 +2487,7 @@ codeunit 408 DimensionManagement
 
     procedure CheckICDim(ICDimCode: Code[20]): Boolean
     var
-        ICDim: Record "411";
+        ICDim: Record "IC Dimension";
     begin
         IF ICDim.GET(ICDimCode) THEN BEGIN
             IF ICDim.Blocked THEN BEGIN
@@ -2505,7 +2505,7 @@ codeunit 408 DimensionManagement
 
     procedure GetServContractDim(TableID: Integer; DocType: Option; DocNo: Code[20]; DocLineNo: Integer; "Source Code": Code[20]; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        ServContrDim: Record "389";
+        ServContrDim: Record "Service Contract Dimension";
     begin
         GetGLSetup;
         IF TempDimBuf1.FIND('-') THEN BEGIN
@@ -2561,7 +2561,7 @@ codeunit 408 DimensionManagement
 
     procedure SaveJobTaskDim("Job No.": Code[20]; "Job Task No.": Code[20]; FieldNumber: Integer; ShortcutDimCode: Code[20])
     var
-        JobTaskDim: Record "1002";
+        JobTaskDim: Record "Job Task";
         RecRef: RecordRef;
         xRecRef: RecordRef;
         ChangeLogMgt: Codeunit "423";
@@ -2614,8 +2614,8 @@ codeunit 408 DimensionManagement
 
     procedure InsertJobTaskDim("Job No.": Code[20]; "Job Task No.": Code[20]; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     var
-        DefaultDim: Record "352";
-        JobTaskDim: Record "1002";
+        DefaultDim: Record "Default Dimension";
+        JobTaskDim: Record "Job Task";
     begin
         GetGLSetup;
         DefaultDim.SETRANGE("Table ID", DATABASE::Job);
@@ -2657,13 +2657,13 @@ codeunit 408 DimensionManagement
 
     procedure DeleteJobTaskTempDim()
     var
-        JobTaskDim: Record "1002";
+        JobTaskDim: Record "Job Task";
     begin
         JobTaskDimTemp.RESET;
         JobTaskDimTemp.DELETEALL;
     end;
 
-    procedure UpdateSCInvLineDim(var ServContractDim: Record "389"; var DocDim: Record "Document Dimension"; ServLine: Record "5902"; ServContractHeader: Record "5965"; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
+    procedure UpdateSCInvLineDim(var ServContractDim: Record "Service Contract Dimension"; var DocDim: Record "Document Dimension"; ServLine: Record "Service Line"; ServContractHeader: Record "5965"; var GlobalDim1Code: Code[20]; var GlobalDim2Code: Code[20])
     begin
         GetGLSetup;
         IF ServContractDim.FIND('-') THEN BEGIN
